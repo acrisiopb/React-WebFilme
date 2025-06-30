@@ -4,9 +4,16 @@ import { useState, useEffect } from 'react';
 import './index.scss';
 import axios from 'axios';
 
+export interface MovieType{
+    title: string,
+    poster_path: string,
+    overview: string,
+    vote_average: number,
+}
+
 export default function MovieList() {
 
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState<MovieType[]>([]);
 
     useEffect(() => {
         getMovies();
