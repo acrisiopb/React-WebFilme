@@ -32,8 +32,8 @@ export default function MovieList() {
         }).then(Response => {
             setMovies(Response.data.results);
             //  console.log(Response.data.results);
+            setIsLoading(false);
         })
-        setIsLoading(false);
     }
     if (isLoading) {
       return <Loading/>
