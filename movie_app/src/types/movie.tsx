@@ -3,6 +3,6 @@ export interface Movie {
     id: number,
     title: string,
     poster_path: string,
-    overview: string,
+    overview: null|string,
     vote_average: number,
 }

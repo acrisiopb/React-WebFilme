@@ -26,18 +26,30 @@
         padding: 10px;
 
         .movie-title {
-            font-size: 12px;
+            font-size: 17px;
             color: #f1f5f9;
+            margin-bottom: 8px;
         }
 
         .hidden-content {
             color: #f1f5f9;
-            ;
             font-size: 12px;
             margin-top: 8px;
             height: 0px;
             opacity: 0;
             transition:  all .6s;
+
+            .btn-default {
+                background-color: #6046ff;
+                padding: 6px 8px;
+                border-radius: 4px;
+                margin-top: 10px;
+                color: #FFF;
+                border: none;
+                cursor:  pointer;
+                width: 100%;
+            }
+            
         }
     }
 
@@ -49,10 +61,20 @@
         }
         .hidden-content{
             opacity: 1;
-            height: 100px;
 
         }
+        .movie-infos:has(.description) .hidden-content{
+            height: 100px;
+        }
+        .movie-infos:not(:has(.description)) .hidden-content{
+            height: 50px;
+        }
+
+        .btn-default:hover {
+                background-color: #371af3;
+                border-left: 3px solid rgb(255, 255, 255);
+            }
+
     }
 }
 
-.btn-default {}

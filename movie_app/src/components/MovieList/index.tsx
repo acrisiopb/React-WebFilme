@@ -1,24 +1,28 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
 import './index.scss';
 import axios from 'axios';
 import { Movie } from '@/types/movie';
+import Loading from '../Loading';
 import MovieCard from '../MovieCard';
-
 
 
 export default function MovieList() {
 
     const [movies, setMovies] = useState<Movie[]>([]);
 
+    // Load
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+
     useEffect(() => {
         getMovies();
     }, []);
 
 
-    const getMovies = () => {
-        axios({
+    const getMovies = async () => {
+        await axios({
             method: 'get',
             url: 'https://api.themoviedb.org/3/discover/movie',
             params: {
@@ -29,6 +33,10 @@ export default function MovieList() {
             setMovies(Response.data.results);
             //  console.log(Response.data.results);
         })
+        setIsLoading(false);
+    }
+    if (isLoading) {
+      return <Loading/>
     }
 
     return (

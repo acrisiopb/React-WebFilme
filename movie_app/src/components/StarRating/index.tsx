@@ -3,13 +3,12 @@ import { FaRegStar } from "react-icons/fa";
 import './index.scss';
 
 export interface Props {
-    rating: number
+    rating: number,
 }
 
 export default function starRating(props: Props) {
 
     const numStarts = Math.round(props.rating / 2);
-    // console.log(numStarts)
 
     const fullStars = [];
     const emptyStars = [];
@@ -32,7 +31,7 @@ export default function starRating(props: Props) {
             )}
             {emptyStars.map(index =>
 
-                <FaRegStar key={index}/>
+                <FaRegStar key={index} />
 
             )}
 
