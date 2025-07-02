@@ -3,6 +3,7 @@
 import { Movie } from "@/types/movie"
 import StarRating from "../StarRating";
 import './index.scss';
+import Link from "next/link";
 export interface props {
     movie: Movie
 }
@@ -35,9 +36,9 @@ export default function MovieCard(props: props) {
                             }
                         </p>}
 
-                    <button className="btn-default">
-                        Ver mais
-                    </button>
+                         
+                        <Link href={`/Movie/${movie.id}`} className="btn-default">Ver mais</Link>
+                    
                 </div>
             </div>
 

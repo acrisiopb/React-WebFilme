@@ -48,6 +48,9 @@
                 border: none;
                 cursor:  pointer;
                 width: 100%;
+                display: block;
+                text-decoration: none;
+                text-align: center;
             }
             
         }
@@ -74,7 +77,7 @@
                 background-color: #371af3;
                 border-left: 3px solid rgb(255, 255, 255);
             }
-
     }
+    
 }
 
