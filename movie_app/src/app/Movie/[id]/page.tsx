@@ -1,10 +1,11 @@
 "use client";
 import { Movie } from "@/types/movie"
-
+import { toast } from 'react-toastify';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import './index.scss';
 import axios from 'axios';
+import StarRating from "@/components/StarRating";
 
 
 export interface props {
@@ -49,6 +50,48 @@ export default function MoviePage() {
 
     }, [id, router]);
 
+    function salveMovie() {
+
+        if (!movie) {
+            console.log("Este fime já está na sua lista!");
+            return;
+        }
+
+
+        const MyList = localStorage.getItem("@MovieBBG");
+
+        let MovieSave = MyList ? JSON.parse(MyList) : [];
+
+        const hasMovie = MovieSave.some((m) => m.id === movie.id);
+
+        if (hasMovie) {
+            console.log("Este filme já está na sua lista!");
+            toast.warn("Este filme já está na sua lista!", {
+                style: {
+                    background: "rgb(199, 0, 0)",
+                    color: "#fff"
+                }
+            }
+
+            );
+            return;
+        }
+
+        MovieSave.push(movie);
+        localStorage.setItem("@MovieBBG", JSON.stringify(MovieSave));
+        // console.log("Filme salvo com sucesso!");
+        toast.success("Filme salvo com sucesso!", {
+            style: {
+                background:"rgb(71, 110, 4)",
+                color: "#fff"
+            }
+        }
+        
+        );
+
+    }
+
+
     if (!movie) {
         return <p>Carregando...</p>;
     }
@@ -58,7 +101,22 @@ export default function MoviePage() {
             <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt={movie.title} />
             <h3>Sinopse</h3>
             <span>{movie.overview}</span>
-            <strong>Avaliação: {movie.vote_average} / 10</strong>
+            <strong>Avaliação:
+
+                {movie.vote_average > 0 &&
+
+                    <StarRating rating={movie.vote_average} />
+                }
+            </strong>
+            {/* Botões para salvar o filme ou assistir ao trailer */}
+            <div className="area-buttons">
+                <button onClick={salveMovie}>Salvar</button>
+                <button>
+                    <a target='black' rel="external" href={`https://pobreflix.skin/?s=${movie.title}`}>
+                        Assistir
+                    </a>
+                </button>
+            </div>
         </div>
     );
 }

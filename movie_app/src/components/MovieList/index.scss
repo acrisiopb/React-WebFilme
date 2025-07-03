@@ -1,3 +1,8 @@
+h2{
+    color: #fff;
+    margin-top: 20px;
+    margin-left: 2%;
+}
 .movie-list{
     padding: 24px;
     display: grid;
@@ -6,3 +11,40 @@
     list-style: none;
     width: 100%;
 }
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+    button{
+        background-color: rgb(40, 40, 255);
+        color: #fff;
+        margin-left: 10px;
+        width: 100px;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover{
+        background-color: rgb(28, 28, 178);
+        color: #fff;
+    }
+    button:disabled{
+        background-color: rgb(40, 40, 255);
+        color: #fff; 
+        opacity: 0.5;
+        cursor: default;
+    }
+    
+}
+
+.Page{
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #930303;
+    color: #fff;
+}
+
+   

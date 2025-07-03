@@ -1,13 +1,30 @@
-.navbar{
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #0f172a;
-    padding: 12px 3%;
-    
-    .page-title{
-        color: #fff;   
-    }
-    
-    img{
+    padding: 12px 24px;
+
+    img {
         width: 120px;
         height: 5%;
+    }
+
+
+    .nav-item {
+        padding-right: 15px;
+        a{
+            text-decoration: none;
+        }
+        p {
+            color: #fff;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s;
+
+            &:hover {
+                color: #ff6600;
+            }
+        }
     }
 }

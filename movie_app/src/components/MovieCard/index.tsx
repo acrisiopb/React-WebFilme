@@ -12,9 +12,10 @@ export interface props {
 export default function MovieCard(props: props) {
     const movie = props.movie;
     return (
+        
 
         <li className='movie-card'>
-            
+              
             <div className="movie-poster">
                 <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt={movie.title} />
             </div>
@@ -35,10 +36,7 @@ export default function MovieCard(props: props) {
                                 : movie.overview
                             }
                         </p>}
-
-                         
                         <Link href={`/Movie/${movie.id}`} className="btn-default">Ver mais</Link>
-                    
                 </div>
             </div>
 

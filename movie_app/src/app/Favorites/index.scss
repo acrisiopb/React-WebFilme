@@ -1,0 +1,26 @@
+h2 {
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;    /* 👈 permite quebrar e ir pra baixo */
+    gap: 10px;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.card-container {
+    width: 20%; /* ou 200px fixo se preferir */
+    margin: 5px;
+}
+
+.btn {
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 0px;
+}
+
+.footer{
+   margin-bottom: auto;
+}
