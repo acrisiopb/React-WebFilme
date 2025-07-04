@@ -31,7 +31,7 @@ export default function Favorites() {
     }, []);
 
     //remove movie favorites
-    function removeMove(id){
+    function removeMove(id) {
         let filtMoves = movie.filter((movie) => {
             return (movie.id !== id);
         });
@@ -39,7 +39,7 @@ export default function Favorites() {
         setMovie(filtMoves);
 
         toast.success("Filme excluído da sua lista");
-        
+
         localStorage.setItem("@MovieBBG", JSON.stringify(filtMoves));
     }
 
@@ -47,7 +47,7 @@ export default function Favorites() {
         <div>
             <h2>Meus Favoritos</h2>
             <div className="container">
-
+                {movie.length === 0 && <span className="info">Você não possui nenhum filme salvo. </span>}
                 {movie.map((movie: Movie) => (
                     <Card key={movie.id} className="card-container">
                         <CardMedia
