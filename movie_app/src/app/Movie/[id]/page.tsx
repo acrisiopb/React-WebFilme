@@ -112,7 +112,7 @@ export default function MoviePage() {
             <div className="area-buttons">
                 <button onClick={salveMovie}>Salvar</button>
                 <button>
-                    <a target='black' rel="external" href={`https://pobreflix.skin/?s=${movie.title}`}>
+                    <a target='black' rel="external" href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}>
                         Assistir
                     </a>
                 </button>
