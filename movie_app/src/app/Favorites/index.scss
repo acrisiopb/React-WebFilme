@@ -1,18 +1,24 @@
 h2 {
     color: #fff;
+    padding-left: 20px;
+    padding-top: 20px;
 }
 
 .container {
     display: flex;
-    flex-wrap: wrap;    /* 👈 permite quebrar e ir pra baixo */
-    gap: 10px;
+    flex-wrap: wrap;   
+    gap: 20px;
     justify-content: center;
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 .card-container {
-    width: 20%; /* ou 200px fixo se preferir */
-    margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 200px; 
+  max-width: 250px; 
+  min-height: 370px;
 }
 
 .btn {

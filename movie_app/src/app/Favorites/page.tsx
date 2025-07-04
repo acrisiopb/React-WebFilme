@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 
 
 
+
 export default function Favorites() {
 
 
@@ -26,37 +27,38 @@ export default function Favorites() {
 
 
     return (
+        <div>
+            <h2>Meus Favoritos</h2>
+            <div className="container">
 
-        <div className="container">
-
-            {movie.map((movie) => (
-                <Card key={movie.id} className="card-container">
-                    <CardActionArea>
+                {movie.map((movie) => (
+                    <Card key={movie.id} className="card-container">
                         <CardMedia
                             component="img"
                             height="140"
                             image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                             alt={movie.title}
                         />
-                        <CardContent>
+                        <CardContent style={{ flex: "1 1 auto" }}>
                             <Typography gutterBottom variant="h5" component="div">
                                 {movie.title}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {movie.overview.length > 100 ? `${movie.overview.substring(0, 100)}..`
-                                : movie.overview
-                            }
+                                {movie.overview.length > 100
+                                    ? `${movie.overview.substring(0, 100)}..`
+                                    : movie.overview
+                                }
                             </Typography>
                         </CardContent>
-                    </CardActionArea>
-                    <CardActions sx={{ flex: '1 1 auto' }}>
-                        <Button size="small" color="error" className="btn">
-                            Remove
-                        </Button>
-                    </CardActions>
-                </Card>
-            ))}
+                        <CardActions style={{ marginTop: "auto" }}>
+                            <Button size="small" color="error" className="btn">
+                                Remove
+                            </Button>
+                        </CardActions>
+                    </Card>
 
+                ))}
+            </div>
         </div>
 
     );
