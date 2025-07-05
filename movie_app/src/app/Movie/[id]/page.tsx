@@ -95,28 +95,60 @@ export default function MoviePage() {
     if (!movie) {
         return <p>Carregando...</p>;
     }
+    // return (
+    //     <div className="filme-info">
+    //         <h1>{movie.title}</h1>
+    //         <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt={movie.title} />
+    //         <h3>Sinopse</h3>
+    //         <span>{movie.overview}</span>
+    //         <strong>Avaliação:
+
+    //             {movie.vote_average > 0 &&
+
+    //                 <StarRating rating={movie.vote_average} />
+    //             }
+    //         </strong>
+    //         {/* Botões para salvar o filme ou assistir ao trailer */}
+    //         <div className="area-buttons">
+    //             <button onClick={salveMovie}>Salvar</button>
+    //             <button>
+    //                 <a target='black' rel="external" href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}>
+    //                     Assistir
+    //                 </a>
+    //             </button>
+    //         </div>
+    //     </div>
+    // );
+    
     return (
-        <div className="filme-info">
+        <div 
+          className="movie-page" 
+          style={{ 
+            backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path})`
+          }}
+        >
+          <div className="movie-info-overlay">
             <h1>{movie.title}</h1>
-            <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt={movie.title} />
             <h3>Sinopse</h3>
-            <span>{movie.overview}</span>
-            <strong>Avaliação:
-
-                {movie.vote_average > 0 &&
-
-                    <StarRating rating={movie.vote_average} />
-                }
+            <p>{movie.overview}</p>
+            <strong>
+              Avaliação:
+              {movie.vote_average > 0 && <StarRating rating={movie.vote_average} />}
             </strong>
-            {/* Botões para salvar o filme ou assistir ao trailer */}
             <div className="area-buttons">
-                <button onClick={salveMovie}>Salvar</button>
-                <button>
-                    <a target='black' rel="external" href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}>
-                        Assistir
-                    </a>
-                </button>
+              <button onClick={salveMovie}>Salvar</button>
+              <button>
+                <a 
+                  target='blank' 
+                  rel="external" 
+                  href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}
+                >
+                  Assistir
+                </a>
+              </button>
             </div>
+          </div>
         </div>
-    );
+      );
+      
 }
