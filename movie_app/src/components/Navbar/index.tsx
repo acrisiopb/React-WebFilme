@@ -6,23 +6,36 @@ import { FaHeart } from "react-icons/fa";
 
 export default function Navbar() {
   return (
-    <nav className="navbar">
-      <Link href="/">
-        <Image
-          src="/logoCine.png"
-          alt="BBG CINE"
-          width={170}
-          height={80}
-          priority
-        />
-      </Link>
-
-      <div className="nav-item">
-        <Link href="/Favorites">
-          <p><FaHeart /></p>
-          
+    <header>
+      <nav className="navbar">
+        <Link href="/">
+          <Image
+            src="/logoCine.png"
+            alt="BBG CINE"
+            width={170}
+            height={80}
+            priority
+          />
         </Link>
-      </div>
-    </nav>
+
+        <div className="nav-fav">
+          <Link href="/Favorites">
+            <p><FaHeart /></p>
+
+          </Link>
+        </div>
+      </nav>
+      <nav>
+        <div className="nav-item">
+          <Link href="/">
+            <p>Filmes</p>
+          </Link>
+          <Link href="/">
+            <p>Séries</p>
+          </Link>
+        </div>
+      </nav>
+    </header>
+
   );
 }
