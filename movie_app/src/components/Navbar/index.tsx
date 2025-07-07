@@ -23,6 +23,9 @@ export default function Navbar() {
             <p><FaHeart /></p>
 
           </Link>
+           <Link href="/register">
+            <p>Login</p>
+          </Link>
         </div>
       </nav>
       <nav>

@@ -1,0 +1,131 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: #0f172a;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    gap: 2rem;
+
+    img {
+        width: 120px;
+        height: 5%;
+        margin-bottom: 35px;
+        
+    }
+
+
+
+    .card-left,
+    .card-right {
+        flex: 1;
+    }
+
+    .card-left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-right {
+        text-align: left;
+        padding: 2rem;
+        background: rgba(15, 23, 42, 0.35);
+        border-radius: 8px;
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+        .apresetacao-img{
+             width: 90%;
+
+        }
+        .rodape{
+           display: flex;
+           justify-content: space-between;
+        }
+    }
+}
+
+form {
+    background: rgba(9, 13, 22, 0.457);
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+
+    h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .label-input {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: none;
+        border-radius: 4px;
+        background: rgba(21, 32, 59, 0.8);
+        color: #fff;
+    }
+
+    .input-field:focus {
+        outline: none;
+        background: rgba(66, 99, 176, 0.35);
+    }
+
+    .btn {
+        width: 100%;
+
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        background: #0070f3;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s;
+    }
+
+    .btn:hover {
+        background: #005bb5;
+    }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+
+        .card-left,
+        .card-right {
+            width: 100%;
+        }
+
+        .card-right {
+            margin-top: 2rem;
+        }
+    }
+}
