@@ -53,9 +53,9 @@ export default function Register() {
             <button
               type="button"
               onClick={toggle}
-              className={`toggle-button ${isOn ? "acessar" : "cadastro"}`}
+              className={`toggle-button ${isOn ?  "cadastro": "acessar"}`}
             >
-              {isOn ? "Acessar" : "Cadastre-se"}
+              {isOn ?  "Cadastre-se" : "Acessar" }
             </button>
           </div>
 
