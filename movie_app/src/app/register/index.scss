@@ -125,22 +125,31 @@ form {
 .toggle-button {
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  width: 200px;
-  background: #ccc;
-  color: #fff;
+  border-radius: 0;
+  width: 170px;
+  background: transparent; 
+  color: #ffffff95;
   cursor: pointer;
   transition: all 0.3s;
   font-size: 16px;
-
-  &.acessar {
-    background: #22c55e;
-  }
-
-  &.cadastro {
-    background: #ef4444;
-  }
+  border-bottom: 3px solid transparent; 
 }
+
+.toggle-button.acessar {
+  border-bottom-color: #22c55e93;
+}
+.toggle-button.acessar:hover {
+    color: #fff;
+  border-bottom-color: #22c55e; 
+}
+.toggle-button.cadastro {
+  border-bottom-color: #ef4444bb; 
+}
+.toggle-button.cadastro:hover {
+    color: #fff;
+  border-bottom-color: #ef4444; 
+}
+
 
 /* Animação de transição */
 .form-container {
@@ -172,7 +181,7 @@ form {
     }
 
     .card-right {
-      margin-top: 2rem;
+     display: none;
     }
   }
 }
