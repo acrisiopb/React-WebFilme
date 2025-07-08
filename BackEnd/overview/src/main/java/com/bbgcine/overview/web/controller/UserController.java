@@ -6,6 +6,8 @@ import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bbgcine.overview.entity.User;
 import com.bbgcine.overview.service.UserService;
 import com.bbgcine.overview.web.dto.UserCreateDTO;
+import com.bbgcine.overview.web.dto.UserPassworDTO;
 import com.bbgcine.overview.web.dto.UserResponseDTO;
 import com.bbgcine.overview.web.dto.mapper.UserMapper;
 
@@ -54,5 +57,13 @@ public class UserController {
          return ResponseEntity.ok(UserMapper.toListUserDTO(users));
     }
     
+    //  public User search
+    
+    // ALTERAR PASSWORD - IMPLEMENTAR LOGICA NO SERVICE
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void>updatePassword(@PathVariable Long id, @RequestBody UserPassworDTO dto){
+        userService.updatePass(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
+        return ResponseEntity.noContent().build();
+    }
    
 }

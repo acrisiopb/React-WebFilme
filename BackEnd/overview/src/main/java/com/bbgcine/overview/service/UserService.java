@@ -32,4 +32,8 @@ public class UserService {
         return userRepositoy.findAll();
     }
 
+    // public void updatePass(Long id, String currentPassword, String newPassword, String confirmPassword) {
+        //implementa buscar por Id
+    // }
+
 }
