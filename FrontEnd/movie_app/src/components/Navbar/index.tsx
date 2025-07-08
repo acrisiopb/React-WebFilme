@@ -28,7 +28,7 @@ export default function Navbar() {
           </Link>
         </div>
       </nav>
-      <nav>
+      {/* <nav>
         <div className="nav-item">
           <Link href="/">
             <p>Filmes</p>
@@ -37,7 +37,7 @@ export default function Navbar() {
             <p>Séries</p>
           </Link>
         </div>
-      </nav>
+      </nav> */}
     </header>
 
   );
