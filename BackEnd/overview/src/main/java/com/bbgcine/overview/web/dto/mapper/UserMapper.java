@@ -1,5 +1,8 @@
 package com.bbgcine.overview.web.dto.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 
 import com.bbgcine.overview.entity.User;
@@ -14,5 +17,11 @@ public class UserMapper {
 
     public static UserResponseDTO toUserResponseDTO(User user){
         return new ModelMapper().map(user, UserResponseDTO.class);
+    }
+
+    public static List<UserResponseDTO> toListUserDTO(List<User> user){
+        return user.stream()
+        .map(users -> toUserResponseDTO(users))
+        .collect(Collectors.toList());
     }
 }

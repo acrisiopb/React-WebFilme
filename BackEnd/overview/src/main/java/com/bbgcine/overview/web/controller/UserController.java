@@ -1,8 +1,11 @@
 package com.bbgcine.overview.web.controller;
 
+import java.util.List;
+
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     private final UserService userService;
 
+    //CRIAR USUARIO
     @Operation(summary = "Criar um novo usuário.", description = "Recurso para criar um novo usuário.", responses = {
             @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "409", description = "Usuário e-mail já cadastrado no sistema.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
@@ -40,4 +44,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
+    // BUSCAR TODOS OS USUARIOS
+    @Operation(summary = "Lista todos os usuários.", description = "", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuários recuperado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
+            @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar este recurso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+    })    @GetMapping
+    public ResponseEntity<List<UserResponseDTO>> getAll(){
+         List<User> users = userService.searchAll();
+         return ResponseEntity.ok(UserMapper.toListUserDTO(users));
+    }
+    
+   
 }
