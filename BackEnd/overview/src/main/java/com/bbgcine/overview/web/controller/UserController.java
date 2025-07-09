@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -62,17 +63,26 @@ public class UserController {
     }
 
     // BUSCAR USUAURIO POR ID
+    @Operation(summary = "Localizar usuario.", description = "Recurso para localizar um usuário pelo ID.", responses = {
+
+                    @ApiResponse(responseCode = "200", description = "Recurso localizado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
+
+                    @ApiResponse(responseCode = "404", description = "Usuario não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+                    // @ApiResponse(responseCode = "403", description = "Recursos não permitido ao perfil Usuário.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id){
+    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         User user = userService.searchById(id);
         return ResponseEntity.ok(UserMapper.toUserResponseDTO(user));
     }
 
     // ALTERAR PASSWORD - IMPLEMENTAR LOGICA NO SERVICE
-    // @PatchMapping("/{id}")
-    // public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPassworDTO dto) {
-    //     userService.updatePass(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
-    //     return ResponseEntity.noContent().build();
-    // }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPassworDTO dto) {
+        userService.updatePass(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
+        return ResponseEntity.noContent().build();
+    }
 
 }

@@ -5,10 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bbgcine.overview.entity.User;
+import com.bbgcine.overview.exception.EntityNotFoundException;
 import com.bbgcine.overview.exception.UsernameUniqueViolationException;
 import com.bbgcine.overview.repository.*;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
