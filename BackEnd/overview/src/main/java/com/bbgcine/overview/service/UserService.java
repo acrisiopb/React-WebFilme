@@ -8,6 +8,8 @@ import com.bbgcine.overview.entity.User;
 import com.bbgcine.overview.exception.UsernameUniqueViolationException;
 import com.bbgcine.overview.repository.*;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +34,12 @@ public class UserService {
         return userRepositoy.findAll();
     }
 
-    // public void updatePass(Long id, String currentPassword, String newPassword, String confirmPassword) {
-        //implementa buscar por Id
-    // }
+    @Transactional(readOnly = true)
+    public User searchById(Long id){
+        return userRepositoy.findById(id).orElseThrow(
+            () -> new EntityNotFoundException(String.format("Usuário id = %s, não encontrado. ", id)));
+
+    }
+    
 
 }

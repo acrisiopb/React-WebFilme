@@ -5,6 +5,7 @@ import java.util.List;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bbgcine.overview.entity.User;
+import com.bbgcine.overview.repository.UserRepository;
 import com.bbgcine.overview.service.UserService;
 import com.bbgcine.overview.web.dto.UserCreateDTO;
 import com.bbgcine.overview.web.dto.UserPassworDTO;
@@ -32,9 +34,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/register")
 public class UserController {
+
     private final UserService userService;
 
-    //CRIAR USUARIO
+    // CRIAR USUARIO
     @Operation(summary = "Criar um novo usuário.", description = "Recurso para criar um novo usuário.", responses = {
             @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "409", description = "Usuário e-mail já cadastrado no sistema.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
@@ -51,19 +54,25 @@ public class UserController {
     @Operation(summary = "Lista todos os usuários.", description = "", responses = {
             @ApiResponse(responseCode = "200", description = "Usuários recuperado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar este recurso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-    })    @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAll(){
-         List<User> users = userService.searchAll();
-         return ResponseEntity.ok(UserMapper.toListUserDTO(users));
+    })
+    @GetMapping
+    public ResponseEntity<List<UserResponseDTO>> getAll() {
+        List<User> users = userService.searchAll();
+        return ResponseEntity.ok(UserMapper.toListUserDTO(users));
     }
-    
-    //  public User search
-    
+
+    // BUSCAR USUAURIO POR ID
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id){
+        User user = userService.searchById(id);
+        return ResponseEntity.ok(UserMapper.toUserResponseDTO(user));
+    }
+
     // ALTERAR PASSWORD - IMPLEMENTAR LOGICA NO SERVICE
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void>updatePassword(@PathVariable Long id, @RequestBody UserPassworDTO dto){
-        userService.updatePass(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
-        return ResponseEntity.noContent().build();
-    }
-   
+    // @PatchMapping("/{id}")
+    // public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPassworDTO dto) {
+    //     userService.updatePass(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
+    //     return ResponseEntity.noContent().build();
+    // }
+
 }
