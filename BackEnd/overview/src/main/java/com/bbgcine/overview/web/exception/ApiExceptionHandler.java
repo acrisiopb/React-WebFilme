@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.bbgcine.overview.exception.EntityNotFoundException;
+import com.bbgcine.overview.exception.PasswordInvalidException;
 import com.bbgcine.overview.exception.UsernameUniqueViolationException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,17 @@ public class ApiExceptionHandler {
                         HttpStatus.CONFLICT, ex.getMessage()));
     }
 
+
+    @ExceptionHandler(PasswordInvalidException.class )
+    public ResponseEntity<ErrorMessage> passwordInvalidException(PasswordInvalidException ex,
+            HttpServletRequest request) {
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,
+                        HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
 
 
     @ExceptionHandler({ EntityNotFoundException.class })

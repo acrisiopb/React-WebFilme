@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.bbgcine.overview.entity.User;
 import com.bbgcine.overview.exception.EntityNotFoundException;
+import com.bbgcine.overview.exception.PasswordInvalidException;
 import com.bbgcine.overview.exception.UsernameUniqueViolationException;
 import com.bbgcine.overview.repository.*;
 
@@ -34,11 +35,30 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User searchById(Long id){
+    public User searchById(Long id) {
         return userRepositoy.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Usuário id = %s, não encontrado. ", id)));
+                () -> new EntityNotFoundException(String.format("Usuário id = %s, não encontrado. ", id)));
 
     }
     
+    @Transactional
+    public User updatePass(Long id, String currentPassword, String newPassword, String confirmPassword) {
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new PasswordInvalidException("Nova senha não confere com confirmação de senha..");
+        }
+
+        User u = searchById(id);
+
+        if (!u.getPassword().equals(currentPassword)) {
+            throw new RuntimeException("Sua senha não confere");
+        }
+
+        u.setPassword(newPassword);
+
+        return u;
+
+        
+    }
 
 }

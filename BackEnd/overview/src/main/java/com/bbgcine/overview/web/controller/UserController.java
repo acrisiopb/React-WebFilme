@@ -78,7 +78,23 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.toUserResponseDTO(user));
     }
 
-    // ALTERAR PASSWORD - IMPLEMENTAR LOGICA NO SERVICE
+
+
+
+    // ALTERAR PASSWORD
+    @Operation(summary = "Atualizar senha.", description = "", responses = {
+
+            @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso." ,  content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
+
+            @ApiResponse(responseCode = "400", description = "Senha não confere.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+            // @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+            @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar este recurso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+            @ApiResponse(responseCode = "422", description = "Erro de validação nos campos enviados. Verifique os detalhes e tente novamente.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+    })
+
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPassworDTO dto) {
         userService.updatePass(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
