@@ -1,11 +1,7 @@
 package com.bbgcine.overview.entity;
 
 import java.io.Serializable;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -16,8 +12,13 @@ import lombok.*;
 @Entity
 @Table(name = "tb_movie_save")
 public class SaveMovie implements Serializable{
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)    
+    @Column(name = "id_tb_movie_save")
     private Long id;
+
+    @Column(name = "tb_movie_save_moveid")
     private Long movieId; // Api ID
 
     @ManyToOne
