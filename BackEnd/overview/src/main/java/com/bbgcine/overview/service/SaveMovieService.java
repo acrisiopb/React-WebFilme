@@ -3,12 +3,15 @@ package com.bbgcine.overview.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bbgcine.overview.entity.SaveMovie;
 import com.bbgcine.overview.entity.User;
 import com.bbgcine.overview.repository.SaveMovieRepository;
 import com.bbgcine.overview.repository.UserRepository;
 import com.bbgcine.overview.web.dto.SaveMovieCreateDTO;
+import com.bbgcine.overview.web.dto.SaveMovieResponseDTO;
+import com.bbgcine.overview.web.dto.mapper.SaveMovieMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,25 +21,24 @@ public class SaveMovieService {
 
     private final SaveMovieRepository saveMovieRepository;
     private final UserRepository userRepository;
+    private final SaveMovieMapper mapper;
 
-    // public List<SaveMovieCreateDTO> save(List<SaveMovieCreateDTO> saveMoveDTOs) {
-    //     List<SaveMovie> entities = saveMoveDTOs.stream().map(dto -> {
-    //         User user = userRepository.findById(dto.getUserId())
-    //                 .orElseThrow(() -> new RuntimeException("user not found"));
+    @Transactional
+    public List<SaveMovieResponseDTO> save(List<SaveMovieCreateDTO> saveMovie) {
+        List<SaveMovie> entities = saveMovie.stream()
+            .map(dto -> {
+                SaveMovie movie = mapper.toSaveMovie(dto);
+                User user = userRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                movie.setUser(user);
+                return movie;
+            })
+            .toList();
 
-    //         SaveMovie movie = new SaveMovie();
-    //         movie.setMovieId(dto.getMovieId());
-    //         movie.setUser(user);
-    //         return movie;
-    //     }).toList();
-
-    //     List<SaveMovie> saved = saveMovieRepository.saveAll(entities);
-
-    //     return saved.stream().map(entity -> {
-    //         SaveMovieCreateDTO dto = new SaveMovieCreateDTO();
-    //         dto.setMovieId(entity.getUser().getId());
-    //         return dto;
-    //     }).toList();
-    // }
-
+        List<SaveMovie> saved = saveMovieRepository.saveAll(entities);
+        return saved.stream()
+            .map(mapper::toResponse)
+            .toList();
+    }
 }
+
