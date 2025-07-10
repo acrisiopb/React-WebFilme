@@ -16,7 +16,7 @@ public class UserCreateDTO {
 
     @JsonIgnore
     private Long id;
-    
+
     @NotBlank
     private String username;
 
@@ -25,6 +25,6 @@ public class UserCreateDTO {
     private String email;
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 6, max = 8)
     private String password;
 }

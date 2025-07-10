@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bbgcine.overview.entity.SaveMovie;
 import com.bbgcine.overview.entity.User;
+import com.bbgcine.overview.exception.EntityNotFoundException;
 import com.bbgcine.overview.repository.SaveMovieRepository;
 import com.bbgcine.overview.repository.UserRepository;
 import com.bbgcine.overview.web.dto.SaveMovieCreateDTO;
@@ -26,19 +27,24 @@ public class SaveMovieService {
     @Transactional
     public List<SaveMovieResponseDTO> save(List<SaveMovieCreateDTO> saveMovie) {
         List<SaveMovie> entities = saveMovie.stream()
-            .map(dto -> {
-                SaveMovie movie = mapper.toSaveMovie(dto);
-                User user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-                movie.setUser(user);
-                return movie;
-            })
-            .toList();
+                .map(dto -> {
+                    SaveMovie movie = mapper.toSaveMovie(dto);
+                    User user = userRepository.findById(dto.getUserId())
+                            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                    movie.setUser(user);
+                    return movie;
+                })
+                .toList();
 
         List<SaveMovie> saved = saveMovieRepository.saveAll(entities);
         return saved.stream()
-            .map(mapper::toResponse)
-            .toList();
+                .map(arg0 -> mapper.toResponse(arg0))
+                .toList();
     }
-}
 
+    @Transactional(readOnly = true)
+    public List<SaveMovie> getAll() {
+        return saveMovieRepository.findAll();
+    }
+
+}

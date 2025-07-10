@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Recurso não processado por dados de entrada invalidos.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping
-    public ResponseEntity<UserResponseDTO> create(@RequestBody UserCreateDTO createDTO) throws Exception {
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserCreateDTO createDTO) throws Exception {
         User savedUser = userService.save(UserMapper.toUser(createDTO));
         UserResponseDTO responseDTO = UserMapper.toUserResponseDTO(savedUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -62,11 +63,13 @@ public class UserController {
     // BUSCAR USUAURIO POR ID
     @Operation(summary = "Localizar usuario.", description = "Recurso para localizar um usuário pelo ID.", responses = {
 
-                    @ApiResponse(responseCode = "200", description = "Recurso localizado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Recurso localizado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
 
-                    @ApiResponse(responseCode = "404", description = "Usuario não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Usuario não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
-                    // @ApiResponse(responseCode = "403", description = "Recursos não permitido ao perfil Usuário.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            // @ApiResponse(responseCode = "403", description = "Recursos não permitido ao
+            // perfil Usuário.", content = @Content(mediaType = "application/json", schema =
+            // @Schema(implementation = ErrorMessage.class)))
 
     })
     @GetMapping("/{id}")
@@ -75,17 +78,16 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.toUserResponseDTO(user));
     }
 
-
-
-
     // ALTERAR PASSWORD
     @Operation(summary = "Atualizar senha.", description = "", responses = {
 
-            @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso." ,  content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
+            @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
 
             @ApiResponse(responseCode = "400", description = "Senha não confere.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
-            // @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+            // @ApiResponse(responseCode = "404", description = "Recurso não encontrado.",
+            // content = @Content(mediaType = "application/json", schema =
+            // @Schema(implementation = ErrorMessage.class))),
 
             @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar este recurso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
