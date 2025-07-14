@@ -18,7 +18,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tb_user")
-    private Long id;
+    protected Long id;
     @Column(name = "tb_user_username", nullable = false, unique = false, length = 100)
     private String username;
     @Column(name = "tb_user_email", nullable = false, unique = true, length = 100)

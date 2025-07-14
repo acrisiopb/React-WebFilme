@@ -2,12 +2,14 @@ package com.bbgcine.overview.service;
 
 import java.util.List;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bbgcine.overview.entity.SaveMovie;
 import com.bbgcine.overview.entity.User;
 import com.bbgcine.overview.exception.EntityNotFoundException;
+import com.bbgcine.overview.jwt.JwtUserDetails;
 import com.bbgcine.overview.repository.SaveMovieRepository;
 import com.bbgcine.overview.repository.UserRepository;
 import com.bbgcine.overview.web.dto.SaveMovieCreateDTO;
@@ -15,9 +17,11 @@ import com.bbgcine.overview.web.dto.SaveMovieResponseDTO;
 import com.bbgcine.overview.web.dto.mapper.SaveMovieMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class SaveMovieService {
 
     private final SaveMovieRepository saveMovieRepository;
@@ -43,15 +47,24 @@ public class SaveMovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<SaveMovie> getAll() {
-        return saveMovieRepository.findAll();
+    public List<SaveMovie> getAll(JwtUserDetails currentUser) {
+        return saveMovieRepository.findAllByUserId(currentUser.getId());
     }
 
-   public void deleteById(Long id) {
-    SaveMovie movie = saveMovieRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Filme com id " + id + " não encontrado"));
+   @Transactional
+    public void deleteById(Long id, JwtUserDetails currentUser) {
+        SaveMovie movie = saveMovieRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Filme com id " + id + " não encontrado"));
 
-    saveMovieRepository.deleteById(id);
-}
+                log.info("Tentativa de exclusão do filme ID: {}. Dono do filme (ID): {}. Usuário da requisição (ID): {}", 
+                 id, movie.getUser().getId(), currentUser.getId());
 
+        if (!movie.getUser().getId().equals(currentUser.getId())) {
+            log.warn("ACESSO NEGADO! Usuário ID {} tentou apagar filme do usuário ID {}", 
+                     currentUser.getId(), movie.getUser().getId());
+            throw new AccessDeniedException("Acesso negado. Você não tem permissão para apagar este filme.");
+        }
+        saveMovieRepository.delete(movie);
+        log.info("Filme ID {} apagado com sucesso pelo usuário ID {}", id, currentUser.getId());
+    }
 }
