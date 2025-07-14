@@ -30,7 +30,7 @@ public class SaveMovieService {
                 .map(dto -> {
                     SaveMovie movie = mapper.toSaveMovie(dto);
                     User user = userRepository.findById(dto.getUserId())
-                            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                            .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
                     movie.setUser(user);
                     return movie;
                 })
@@ -46,5 +46,12 @@ public class SaveMovieService {
     public List<SaveMovie> getAll() {
         return saveMovieRepository.findAll();
     }
+
+   public void deleteById(Long id) {
+    SaveMovie movie = saveMovieRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Filme com id " + id + " não encontrado"));
+
+    saveMovieRepository.deleteById(id);
+}
 
 }

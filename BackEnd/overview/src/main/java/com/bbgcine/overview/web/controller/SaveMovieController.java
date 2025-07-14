@@ -5,6 +5,7 @@ import java.util.List;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,6 @@ import com.bbgcine.overview.entity.SaveMovie;
 import com.bbgcine.overview.service.SaveMovieService;
 import com.bbgcine.overview.web.dto.SaveMovieCreateDTO;
 import com.bbgcine.overview.web.dto.SaveMovieResponseDTO;
-import com.bbgcine.overview.web.dto.UserResponseDTO;
 import com.bbgcine.overview.web.dto.mapper.SaveMovieMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,5 +57,15 @@ public class SaveMovieController {
     public ResponseEntity<List<SaveMovieResponseDTO>> searchAll() {
         List<SaveMovie> saveM = saveMovieService.getAll();
         return ResponseEntity.ok(SaveMovieMapper.toListUserDTO(saveM));
+    }
+
+    @Operation(summary = "Deleta filme por id", description = "Recurso para deletar filme por id.", responses = {
+            @ApiResponse(responseCode = "204", description = "Recurso deletado com sucesso.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Filme não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        saveMovieService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
