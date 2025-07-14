@@ -3,32 +3,62 @@ import Image from 'next/image';
 import { useState } from "react";
 import "./index.scss";
 import Link from 'next/link';
+import api from '@/services/api';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); 
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isOn, setIsOn] = useState(false);
   const [closing, setClosing] = useState(false);  // controla animação de fechar
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isOn && password !== confirmPassword) {
-      alert("As senhas não coincidem!");
-      return;
+    setError("");
+
+    if (isOn) {
+      try {
+
+        const response = await api.post('/api/v1/auth', { email, password });
+        localStorage.setItem('userToken', response.data.token);
+        alert("Login realizado com sucesso! ")
+        router.push('/Dashboard');
+      } catch (err) {
+        setError("Falha no login. Verifique seu e-mail e senha.");
+        console.error("Erro no login: ", err)
+      }
     }
-    console.log("Dados cadastrados:", { name, email, password });
-   
+
+    else{
+      if(password !== confirmPassword){
+          setError("As senhas não coincidem!");
+          return;
+      }
+      try{
+        await api.post('/api/register', {name, email, password});
+        alert("Cadastro realizado com sucesso!");
+        toggle();
+      }
+      catch(err){
+        setError("Error ao realziar o cadastro. Tente novamente.");
+        console.error("Erro no cadastro:", err);
+      }
+    }
+
   };
 
   const toggle = () => {
     setClosing(true); // Inicia animação de fechar
 
     setTimeout(() => {
-      setIsOn(prev => !prev);  // troca o modo depois que o modal "fechou"
-      setClosing(false);       // abre de novo
-      // Limpa campos se quiser:
+      setIsOn(prev => !prev); 
+      setClosing(false);     
+ 
       setName("");
       setEmail("");
       setPassword("");
@@ -53,13 +83,13 @@ export default function Register() {
             <button
               type="button"
               onClick={toggle}
-              className={`toggle-button ${isOn ?  "cadastro": "acessar"}`}
+              className={`toggle-button ${isOn ? "cadastro" : "acessar"}`}
             >
-              {isOn ?  "Cadastre-se" : "Acessar" }
+              {isOn ? "Cadastre-se" : "Acessar"}
             </button>
           </div>
 
-          {!isOn && ( 
+          {!isOn && (
             <>
               <label className="label-input">Nome</label>
               <input
