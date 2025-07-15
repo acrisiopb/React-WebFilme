@@ -1,10 +1,12 @@
 "use client";
 import Image from 'next/image';
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import "./index.scss";
 import Link from 'next/link';
 import api from '@/services/api';
 import { useRouter } from 'next/navigation';
+import { cookies } from 'next/headers';
+import axios from 'axios';
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -17,34 +19,38 @@ export default function Register() {
 
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
     if (isOn) {
       try {
+   
+        await axios.post('/api/login', { email, password });
 
-        const response = await api.post('/api/v1/auth', { email, password });
-        localStorage.setItem('userToken', response.data.token);
-        alert("Login realizado com sucesso! ")
+        alert("Login realizado com sucesso!");
         router.push('/Dashboard');
+
       } catch (err) {
         setError("Falha no login. Verifique seu e-mail e senha.");
-        console.error("Erro no login: ", err)
+        console.error("Erro no login:", err);
       }
+      alert("Login realizado com sucesso! ")
+      router.push('/Dashboard');
     }
 
-    else{
-      if(password !== confirmPassword){
-          setError("As senhas não coincidem!");
-          return;
+    else {
+      if (password !== confirmPassword) {
+        setError("As senhas não coincidem!");
+        return;
       }
-      try{
-        await api.post('/api/register', {name, email, password});
+      try {
+        const dadosParaEnviar = { username: name, email, password };
+        await api.post('/api/register', dadosParaEnviar);
         alert("Cadastro realizado com sucesso!");
         toggle();
       }
-      catch(err){
+      catch (err) {
         setError("Error ao realziar o cadastro. Tente novamente.");
         console.error("Erro no cadastro:", err);
       }
@@ -53,17 +59,17 @@ export default function Register() {
   };
 
   const toggle = () => {
-    setClosing(true); // Inicia animação de fechar
+    setClosing(true);
 
     setTimeout(() => {
-      setIsOn(prev => !prev); 
-      setClosing(false);     
- 
+      setIsOn(prev => !prev);
+      setClosing(false);
+
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-    }, 300); // duração da animação, ajuste conforme o CSS
+    }, 300);
   };
 
   return (

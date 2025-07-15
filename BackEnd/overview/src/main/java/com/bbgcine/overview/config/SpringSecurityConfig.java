@@ -46,6 +46,7 @@ public class SpringSecurityConfig {
                         ).permitAll()
                         // 3. CORREÇÃO: Permite todas as sub-rotas de /auth (ex: /auth/login, /auth/register)
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/register/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
