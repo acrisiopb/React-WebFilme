@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { usePathname } from "next/navigation";
+import { AuthProvider } from "./context/AuthContext";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -23,11 +24,13 @@ export default function RootLayout({
   const pathname = usePathname();
   return (
     <html lang="en">
+        <AuthProvider>
       <body>
         {pathname !== '/register' && <Navbar /> }
         {children}
         <ToastContainer />
       </body>
+      </AuthProvider>
     </html>
   );
 }

@@ -1,6 +1,7 @@
 package com.bbgcine.overview.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -38,14 +39,18 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User searchById(Long id) {
-        return userRepositoy.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Usuário id = %s, não encontrado. ", id)));
+   public User searchById(Long id) {
+    return userRepositoy.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com id: " + id));
+}
 
-    }
+
+    
+
 
     @Transactional
-    public User updatePass(JwtUserDetails currentUser, String currentPassword, String newPassword, String confirmPassword) {
+    public User updatePass(JwtUserDetails currentUser, String currentPassword, String newPassword,
+            String confirmPassword) {
 
         if (!newPassword.equals(confirmPassword)) {
             throw new PasswordInvalidException("Nova senha não confere com confirmação de senha..");
@@ -68,8 +73,8 @@ public class UserService {
     public User searchEmail(String email) {
 
         return userRepositoy.findByEmail(email).orElseThrow(
-            () -> new EntityNotFoundException(
-                String.format("Email  = %s , não encontrado", email)));
+                () -> new EntityNotFoundException(
+                        String.format("Email  = %s , não encontrado", email)));
     }
 
 }

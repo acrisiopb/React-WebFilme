@@ -53,10 +53,10 @@ public class UserController {
     }
 
     // BUSCAR TODOS OS USUARIOS
-    @Operation(summary = "Lista todos os usuários.", description = "", security = @SecurityRequirement(name = "security"),  responses = {
+    @Operation(summary = "Lista todos os usuários.", description = "", security = @SecurityRequirement(name = "security"), responses = {
             @ApiResponse(responseCode = "200", description = "Usuários recuperado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-            
+
     })
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAll() {
@@ -74,9 +74,9 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
 
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
-        User user = userService.searchById(id);
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getById(@AuthenticationPrincipal JwtUserDetails currentUser) {
+        User user = userService.searchById(currentUser.getId());
         return ResponseEntity.ok(UserMapper.toUserResponseDTO(user));
     }
 
@@ -87,7 +87,7 @@ public class UserController {
 
             @ApiResponse(responseCode = "400", description = "Senha não confere.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
-            @ApiResponse(responseCode = "404", description = "Recurso não encontrado.",  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
             @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
@@ -95,7 +95,8 @@ public class UserController {
     })
 
     @PatchMapping
-    public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserPassworDTO dto,  @AuthenticationPrincipal JwtUserDetails currentUser) {
+    public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserPassworDTO dto,
+            @AuthenticationPrincipal JwtUserDetails currentUser) {
         userService.updatePass(currentUser, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
         return ResponseEntity.noContent().build();
     }
