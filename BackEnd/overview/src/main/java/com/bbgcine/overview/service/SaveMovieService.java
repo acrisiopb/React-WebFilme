@@ -1,6 +1,7 @@
 package com.bbgcine.overview.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -67,4 +68,15 @@ public class SaveMovieService {
         saveMovieRepository.delete(movie);
         log.info("Filme ID {} apagado com sucesso pelo usuário ID {}", id, currentUser.getId());
     }
+
+   public void deleteByMovieId(Long movieId, JwtUserDetails currentUser) {
+    Optional<SaveMovie> optional = saveMovieRepository.findByMovieIdAndUserId(movieId, currentUser.getId());
+
+    if (optional.isEmpty()) {
+        throw new EntityNotFoundException("Filme não encontrado");
+    }
+
+    saveMovieRepository.deleteById(optional.get().getId());
+}
+
 }

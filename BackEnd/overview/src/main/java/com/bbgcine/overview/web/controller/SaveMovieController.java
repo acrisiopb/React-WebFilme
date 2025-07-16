@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/movie/save")
-@Slf4j 
+@Slf4j
 public class SaveMovieController {
 
     private final SaveMovieService saveMovieService;
@@ -47,9 +47,10 @@ public class SaveMovieController {
             @ApiResponse(responseCode = "422", description = "Recurso não processado por dados de entrada invalidos.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping
-    public ResponseEntity<List<SaveMovieResponseDTO>> create(@RequestBody List<SaveMovieCreateDTO> saveMovie,  @AuthenticationPrincipal JwtUserDetails currentUser ) {
-          log.info("Recebida requisição para salvar filmes. Payload recebido: {}", saveMovie);
-       // Validação de segurança
+    public ResponseEntity<List<SaveMovieResponseDTO>> create(@RequestBody List<SaveMovieCreateDTO> saveMovie,
+            @AuthenticationPrincipal JwtUserDetails currentUser) {
+        log.info("Recebida requisição para salvar filmes. Payload recebido: {}", saveMovie);
+        // Validação de segurança
         if (currentUser == null || currentUser.getId() == null) {
             log.error("Tentativa de salvar filmes sem um usuário autenticado.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -59,7 +60,7 @@ public class SaveMovieController {
         // e ignoramos qualquer userId que o front-end possa ter enviado.
         Long authenticatedUserId = currentUser.getId();
         saveMovie.forEach(dto -> dto.setUserId(authenticatedUserId));
-        
+
         log.info("Payload final sendo enviado para o serviço (com userId do token): {}", saveMovie);
 
         // 6. Enviamos a lista corrigida e segura para o serviço
@@ -70,7 +71,7 @@ public class SaveMovieController {
     @Operation(summary = "Recupera todos os id Filmes.", description = "Recurso para recuperar lista de Id filmes.", security = @SecurityRequirement(name = "security"), responses = {
             @ApiResponse(responseCode = "200", description = "Recurso criado com sucesso.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SaveMovieCreateDTO.class))),
             @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-           @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
     })
     @GetMapping
@@ -79,14 +80,16 @@ public class SaveMovieController {
         return ResponseEntity.ok(SaveMovieMapper.toListUserDTO(saveM));
     }
 
-    @Operation(summary = "Deleta filme por id", description = "Recurso para deletar filme por id.", security = @SecurityRequirement(name = "security"), responses = {
-            @ApiResponse(responseCode = "204", description = "Recurso deletado com sucesso.", content = @Content),
-             @ApiResponse(responseCode = "403", description = "É necessario ter um Bearer Token Válido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),   
-            @ApiResponse(responseCode = "404", description = "Filme não encontrado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+    @Operation(summary = "Deleta filme por movieId (TMDB)", description = "Recurso para deletar filme usando o ID do filme externo (TMDB).", security = @SecurityRequirement(name = "security"), responses = {
+            @ApiResponse(responseCode = "204", description = "Filme deletado com sucesso."),
+            @ApiResponse(responseCode = "403", description = "Token inválido ou ausente."),
+            @ApiResponse(responseCode = "404", description = "Filme não encontrado.")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal  JwtUserDetails currentUser) {
-        saveMovieService.deleteById(id, currentUser);
+    @DeleteMapping("/movieid/{movieId}")
+    public ResponseEntity<Void> deleteByMovieId(@PathVariable Long movieId,
+            @AuthenticationPrincipal JwtUserDetails currentUser) {
+        saveMovieService.deleteByMovieId(movieId, currentUser);
         return ResponseEntity.noContent().build();
     }
+
 }
