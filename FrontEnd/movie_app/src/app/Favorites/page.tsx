@@ -80,3 +80,7 @@ export default function Favorites() {
 
     );
 }
+
+function useAuth(): { user: any; isLoading: any; } {
+    throw new Error("Function not implemented.");
+}

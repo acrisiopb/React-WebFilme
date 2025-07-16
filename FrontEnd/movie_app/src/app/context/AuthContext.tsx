@@ -18,6 +18,7 @@ interface AuthContextType {
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
+    saveMovieToDb: (movie: Movie) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,7 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const token = localStorage.getItem('@MovieBBG:token');
 
             if (token) {
-                // console.log("[AuthContext] Token encontrado no localStorage. A configurar o header da API...");
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 await fetchUser();
             }
@@ -46,8 +46,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 const login = async (email: string, password: string) => {
     try {
-        // console.log("[AuthContext] A chamar /api/login para autenticar e obter o token...");
-        
         const response = await axios.post('/api/login', { email, password });
         const { token } = response.data;
 
@@ -57,15 +55,11 @@ const login = async (email: string, password: string) => {
 
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
-        // console.log("[AuthContext] Autenticação concluída. Cookie e cabeçalho definidos.");
-
-
         await fetchUser();
         await syncLocalMoviesWithDb();
         router.push('/Dashboard');
 
     } catch (error) {
-        // console.error("[AuthContext] Erro no processo de login:", error);
         delete api.defaults.headers.common['Authorization'];
         throw error;
     }
@@ -74,53 +68,65 @@ const login = async (email: string, password: string) => {
 
     const fetchUser = async (): Promise<User | null> => {
         if (!api.defaults.headers.common['Authorization']) {
-            // console.log("[AuthContext] Nenhum token presente, não há usuário para buscar.");
             setIsLoading(false); 
             return null;
         }
 
-        // console.log("[AuthContext] Buscando dados do usuário com token existente...");
         try {
             const response = await api.get('/api/register/me');
             setUser(response.data);
-            // console.log("[AuthContext] Dados do usuário obtidos com sucesso:", response.data);
             return response.data;
         } catch (error) {
-            // console.error("[AuthContext] Erro ao buscar dados do usuário. O token pode ser inválido.", error);
             return null;
         }
     };
 
-    // FUNÇÃO DE LOGOUT
     const logout = () => {
         setUser(null);
         localStorage.removeItem('@MovieBBG:token');
         delete api.defaults.headers.common['Authorization'];
         router.push('/register');
-        // console.log("[AuthContext] Usuário deslogado e token removido.");
     };
 
-    // A função de sincronização
     const syncLocalMoviesWithDb = async () => {
-        console.log("[AuthContext] Iniciando sincronização dos filmes locais...");
         const localMoviesRaw = localStorage.getItem("@MovieBBG");
         if (!localMoviesRaw) return;
         const localMovies: Movie[] = JSON.parse(localMoviesRaw);
         if (localMovies.length === 0) return;
 
+        // Monta o payload para a sincronização em massa
         const moviesToSync = localMovies.map(movie => ({ movieId: movie.id, userId: 0 }));
 
         try {
+            // Usa o endpoint existente que espera uma lista
             await api.post('/api/movie/save', moviesToSync);
             localStorage.removeItem("@MovieBBG");
-            // console.log("[AuthContext] Filmes locais sincronizados e limpos.");
         } catch (error) {
-            // console.error("[AuthContext] ERRO ao sincronizar filmes.", error);
+            console.error("[AuthContext] ERRO ao sincronizar filmes.", error);
+        }
+    };
+
+    // FUNÇÃO ATUALIZADA: Chama a API com o formato de payload correto
+    const saveMovieToDb = async (movie: Movie) => {
+        if (!user) {
+            throw new Error("Usuário não autenticado.");
+        }
+        try {
+            // A sua API espera uma LISTA. Então, criamos uma lista com um único item.
+            // O formato do item é o mesmo da função syncLocalMoviesWithDb para consistência.
+            const payload = [{ movieId: movie.id, userId: 0 }]; // O userId é ignorado pelo backend, que usa o token.
+
+            // Chamamos o endpoint POST /api/movie/save com a lista contendo um filme.
+            await api.post('/api/movie/save', payload); 
+            console.log("[AuthContext] Filme salvo no banco de dados com sucesso via API externa.");
+        } catch (error) {
+            console.error("[AuthContext] ERRO ao salvar filme via API externa.", error);
+            throw error;
         }
     };
 
     return (
-        <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ user, isLoading, login, logout, saveMovieToDb }}>
             {children}
         </AuthContext.Provider>
     );

@@ -2,10 +2,13 @@
 import { Movie } from "@/types/movie"
 import { toast } from 'react-toastify';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import './index.scss';
 import axios from 'axios';
 import StarRating from "@/components/StarRating";
+// highlight-start
+import { useAuth } from "@/app/context/AuthContext";
+// highlight-end
 
 
 export interface props {
@@ -14,6 +17,9 @@ export interface props {
 
 
 export default function MoviePage() {
+  // highlight-start
+  const { user, saveMovieToDb } = useAuth();
+  // highlight-end
   const router = useRouter();
   const params = useParams();
   const id = params.id;
@@ -50,46 +56,44 @@ export default function MoviePage() {
 
   }, [id, router]);
 
-  function salveMovie() {
+  // highlight-start
+  async function salveMovie() {
+    if (!movie) return;
 
-    if (!movie) {
-      console.log("Este fime já está na sua lista!");
+    // Se o usuário estiver logado, salva direto no banco
+    if (user) {
+      try {
+        await saveMovieToDb(movie);
+        toast.success("Filme salvo nos seus favoritos!", {
+          style: { background: "rgb(71, 110, 4)", color: "#fff" }
+        });
+      } catch (error) {
+        toast.error("Erro ao salvar o filme. Tente novamente.", {
+          style: { background: "rgb(199, 0, 0)", color: "#fff" }
+        });
+      }
       return;
     }
 
-
+    // Lógica original para usuários deslogados (localStorage)
     const MyList = localStorage.getItem("@MovieBBG");
-
     let MovieSave = MyList ? JSON.parse(MyList) : [];
-
-    const hasMovie = MovieSave.some((m) => m.id === movie.id);
+    const hasMovie = MovieSave.some((m: Movie) => m.id === movie.id);
 
     if (hasMovie) {
-      console.log("Este filme já está na sua lista!");
       toast.warn("Este filme já está na sua lista!", {
-        style: {
-          background: "rgb(199, 0, 0)",
-          color: "#fff"
-        }
-      }
-
-      );
+        style: { background: "rgb(199, 0, 0)", color: "#fff" }
+      });
       return;
     }
 
     MovieSave.push(movie);
     localStorage.setItem("@MovieBBG", JSON.stringify(MovieSave));
-    // console.log("Filme salvo com sucesso!");
     toast.success("Filme salvo com sucesso!", {
-      style: {
-        background: "rgb(71, 110, 4)",
-        color: "#fff"
-      }
-    }
-
-    );
-
+      style: { background: "rgb(71, 110, 4)", color: "#fff" }
+    });
   }
+  // highlight-end
 
 
   if (!movie) {
@@ -109,16 +113,22 @@ export default function MoviePage() {
           <h1>{movie.title}</h1>
           <p>{movie.overview}</p>
           <div className="buttons">
-            <button className="watch-now">
-              <a
-                target='blank'
-                rel="external"
-                href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}
-              >
-                ▶ Assista Agora
-              </a>
+            {user && (
+              <>
+                <button className="watch-now">
+                  <a
+                    target='blank'
+                    rel="external"
+                    href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}
+                  >
+                    ▶ Assista Agora
+                  </a>
+                </button>
+              </>
+            )}
+            <button className="trailer" onClick={salveMovie}>
+              Adicionar aos favoritos
             </button>
-            <button className="trailer" onClick={salveMovie}>Adicionar aos favoritos</button>
           </div>
         </div>
         <div className="movie-poster">
