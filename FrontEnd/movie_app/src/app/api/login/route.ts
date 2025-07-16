@@ -1,8 +1,6 @@
 import api from "@/services/api";
 import axios from "axios";
-
 import { NextRequest, NextResponse } from "next/server";
-
 
 export async function POST(request: NextRequest) {
     try {
@@ -14,37 +12,31 @@ export async function POST(request: NextRequest) {
         const { token } = authResponse.data;
 
         if (!token) {
-            return NextResponse.json({ error: 'Token não recebido da API de autenticação' }, { status: 401 });
+            return NextResponse.json({ error: 'Token não recebido' }, { status: 401 });
         }
 
         const response = NextResponse.json({
-            message: "Login bem - secedido"
+            message: "Login bem-sucedido",
+            token: token /
         }, { status: 200 });
 
-        response.cookies.set('@bbg', token, {
+        response.cookies.set('@bbg', token, { 
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 60 * 60 * 24 * 30,
+            maxAge: 60 * 60 * 24 * 30, // 30 dias
             path: '/',
-            sameSite: 'strict',
+            sameSite: 'lax', 
         });
 
         return response;
 
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            console.error("Erro do Axios na API /api/login:", error.response.data);
             return NextResponse.json(
                 { error: error.response.data.message || 'Credenciais inválidas' },
                 { status: error.response.status }
             );
-        } else if (error instanceof Error) {
-            console.error("Erro genérico na API /api/login:", error.message);
-        } else {
-            console.error("Erro inesperado:", error);
         }
-
-        // Resposta padrão caso o erro não seja do Axios
         return NextResponse.json({ error: 'Ocorreu um erro inesperado.' }, { status: 500 });
     }
-}  
+}

@@ -1,45 +1,47 @@
+
 "use client";
 import Image from 'next/image';
 import { FormEvent, useState } from "react";
 import "./index.scss";
 import Link from 'next/link';
 import api from '@/services/api';
-import { useRouter } from 'next/navigation';
-import { cookies } from 'next/headers';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; 
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isOn, setIsOn] = useState(false);
-  const [closing, setClosing] = useState(false);  // controla animação de fechar
+  const [isOn, setIsOn] = useState(true); 
+  const [closing, setClosing] = useState(false);
   const [error, setError] = useState("");
-
-  const router = useRouter();
+  
+  const { login } = useAuth(); 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
-    if (isOn) {
+    if (isOn) { // Se o formulário for de LOGIN
+      console.log("Formulário de login submetido. A chamar a função 'login' do AuthContext...");
       try {
-   
-        await axios.post('/api/login', { email, password });
-
-        alert("Login realizado com sucesso!");
-        router.push('/Dashboard');
-
+  
+        await login(email, password);
+        
+        console.log("Processo de login no contexto concluído.");
+        
       } catch (err) {
-        setError("Falha no login. Verifique seu e-mail e senha.");
-        console.error("Erro no login:", err);
+   
+        setError("Falha no login. Verifique as suas credenciais.");
+        
+        if (axios.isAxiosError(err)) {
+          console.error("ERRO DETALHADO (AXIOS) NO FORMULÁRIO:", err.response?.data || err.message);
+        } else {
+          console.error("ERRO DETALHADO (INESPERADO) NO FORMULÁRIO:", err);
+        }
       }
-      alert("Login realizado com sucesso! ")
-      router.push('/Dashboard');
-    }
-
-    else {
+    } else { // Se o formulário for de CADASTRO
       if (password !== confirmPassword) {
         setError("As senhas não coincidem!");
         return;
@@ -47,31 +49,29 @@ export default function Register() {
       try {
         const dadosParaEnviar = { username: name, email, password };
         await api.post('/api/register', dadosParaEnviar);
-        alert("Cadastro realizado com sucesso!");
+        alert("Cadastro realizado com sucesso! Agora pode aceder.");
         toggle();
       }
       catch (err) {
-        setError("Error ao realziar o cadastro. Tente novamente.");
+        setError("Erro ao realizar o cadastro. Tente novamente.");
         console.error("Erro no cadastro:", err);
       }
     }
-
   };
 
   const toggle = () => {
     setClosing(true);
-
     setTimeout(() => {
       setIsOn(prev => !prev);
       setClosing(false);
-
+      setError("");
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
     }, 300);
   };
-
+  
   return (
     <div className="container">
       <div className="card-left">

@@ -42,7 +42,7 @@ public class SaveMovieService {
 
         List<SaveMovie> saved = saveMovieRepository.saveAll(entities);
         return saved.stream()
-                .map(arg0 -> mapper.toResponse(arg0))
+                .map(t -> mapper.toResponse(t))
                 .toList();
     }
 
@@ -51,17 +51,17 @@ public class SaveMovieService {
         return saveMovieRepository.findAllByUserId(currentUser.getId());
     }
 
-   @Transactional
+    @Transactional
     public void deleteById(Long id, JwtUserDetails currentUser) {
         SaveMovie movie = saveMovieRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Filme com id " + id + " não encontrado"));
 
-                log.info("Tentativa de exclusão do filme ID: {}. Dono do filme (ID): {}. Usuário da requisição (ID): {}", 
-                 id, movie.getUser().getId(), currentUser.getId());
+        log.info("Tentativa de exclusão do filme ID: {}. Dono do filme (ID): {}. Usuário da requisição (ID): {}",
+                id, movie.getUser().getId(), currentUser.getId());
 
         if (!movie.getUser().getId().equals(currentUser.getId())) {
-            log.warn("ACESSO NEGADO! Usuário ID {} tentou apagar filme do usuário ID {}", 
-                     currentUser.getId(), movie.getUser().getId());
+            log.warn("ACESSO NEGADO! Usuário ID {} tentou apagar filme do usuário ID {}",
+                    currentUser.getId(), movie.getUser().getId());
             throw new AccessDeniedException("Acesso negado. Você não tem permissão para apagar este filme.");
         }
         saveMovieRepository.delete(movie);

@@ -28,11 +28,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "Movie Save", description = "Contém todas as operações necessarias aos recursos para cadastro e leitura de Id Filmes")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/movie/save")
+@Slf4j 
 public class SaveMovieController {
 
     private final SaveMovieService saveMovieService;
@@ -45,8 +47,24 @@ public class SaveMovieController {
             @ApiResponse(responseCode = "422", description = "Recurso não processado por dados de entrada invalidos.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping
-    public ResponseEntity<List<SaveMovieResponseDTO>> create(@RequestBody List<SaveMovieCreateDTO> saveMovie) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(saveMovieService.save(saveMovie));
+    public ResponseEntity<List<SaveMovieResponseDTO>> create(@RequestBody List<SaveMovieCreateDTO> saveMovie,  @AuthenticationPrincipal JwtUserDetails currentUser ) {
+          log.info("Recebida requisição para salvar filmes. Payload recebido: {}", saveMovie);
+       // Validação de segurança
+        if (currentUser == null || currentUser.getId() == null) {
+            log.error("Tentativa de salvar filmes sem um usuário autenticado.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // 5. Garantimos a segurança: usamos o ID do usuário autenticado (do token)
+        // e ignoramos qualquer userId que o front-end possa ter enviado.
+        Long authenticatedUserId = currentUser.getId();
+        saveMovie.forEach(dto -> dto.setUserId(authenticatedUserId));
+        
+        log.info("Payload final sendo enviado para o serviço (com userId do token): {}", saveMovie);
+
+        // 6. Enviamos a lista corrigida e segura para o serviço
+        List<SaveMovieResponseDTO> savedMovies = saveMovieService.save(saveMovie);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMovies);
     }
 
     @Operation(summary = "Recupera todos os id Filmes.", description = "Recurso para recuperar lista de Id filmes.", security = @SecurityRequirement(name = "security"), responses = {

@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-
-
 export function middleware(request: NextRequest){
 
+    // A CORREÇÃO: Mudamos o nome do cookie que o middleware procura
     const token =  request.cookies.get('@bbg')?.value;
 
     console.log(`[Middleware] A verificar rota: ${request.nextUrl.pathname}. Token encontrado: ${!!token}`);
@@ -19,9 +18,6 @@ export function middleware(request: NextRequest){
     return NextResponse.next();
 }
 
-
 export const config = {
-    
     matcher: ['/Dashboard/:path*'],
-
 };

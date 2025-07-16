@@ -1,68 +1,122 @@
 'use client';
+
 import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import api from '@/services/api'; // Sua instância do Axios para o backend :8081
+import api from '@/services/api'; 
 import { useRouter } from 'next/navigation';
+import { Movie } from '@/types/movie';
 import axios from 'axios';
 
-// Interface para definir a estrutura do objeto de utilizador
 interface User {
     id: number;
-    name: string;
+    username: string;
     email: string;
 }
 
-// Interface para definir o que o nosso contexto irá fornecer
+
 interface AuthContextType {
-    user: User | null;     
+    user: User | null;
     isLoading: boolean;
-    login: (email, password) => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    // O estado 'user' (minúscula) está correto
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
+    
     useEffect(() => {
-        const fetchUser = async () => {
-            // Adicionamos logs para depuração no console do navegador (F12)
-            console.log("[AuthContext] A tentar buscar dados do utilizador...");
-            setIsLoading(true);
+        const loadUserFromStorage = async () => {
+            const token = localStorage.getItem('@MovieBBG:token');
 
-            try {
-                const response = await api.get('/api/register/me'); 
-                
-                console.log("[AuthContext] SUCESSO! Dados recebidos:", response.data);
-                setUser(response.data);
-            } catch (error) {
-                console.error("[AuthContext] ERRO ao buscar dados do utilizador:", error);
-                setUser(null);
-            } finally {
-                console.log("[AuthContext] Verificação terminada.");
-                setIsLoading(false);
+            if (token) {
+                // console.log("[AuthContext] Token encontrado no localStorage. A configurar o header da API...");
+                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                await fetchUser();
             }
+            setIsLoading(false);
         };
-
-        fetchUser();
+        loadUserFromStorage();
     }, []);
 
-    const login = async (email, password) => {
-        // Chama a API do Next.js para definir o cookie
-        await axios.post('/api/login', { email, password });
-        // Após o sucesso, busca os dados do utilizador para atualizar o estado
+
+
+const login = async (email: string, password: string) => {
+    try {
+        // console.log("[AuthContext] A chamar /api/login para autenticar e obter o token...");
+        
+        const response = await axios.post('/api/login', { email, password });
+        const { token } = response.data;
+
+        if (!token) {
+            throw new Error("Token não foi recebido da rota /api/login");
+        }
+
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
+        // console.log("[AuthContext] Autenticação concluída. Cookie e cabeçalho definidos.");
+
+
         await fetchUser();
+        await syncLocalMoviesWithDb();
         router.push('/Dashboard');
+
+    } catch (error) {
+        // console.error("[AuthContext] Erro no processo de login:", error);
+        delete api.defaults.headers.common['Authorization'];
+        throw error;
+    }
+};
+
+
+    const fetchUser = async (): Promise<User | null> => {
+        if (!api.defaults.headers.common['Authorization']) {
+            // console.log("[AuthContext] Nenhum token presente, não há usuário para buscar.");
+            setIsLoading(false); 
+            return null;
+        }
+
+        // console.log("[AuthContext] Buscando dados do usuário com token existente...");
+        try {
+            const response = await api.get('/api/register/me');
+            setUser(response.data);
+            // console.log("[AuthContext] Dados do usuário obtidos com sucesso:", response.data);
+            return response.data;
+        } catch (error) {
+            // console.error("[AuthContext] Erro ao buscar dados do usuário. O token pode ser inválido.", error);
+            return null;
+        }
     };
 
-    const logout = async () => {
-        await axios.post('/api/logout');
+    // FUNÇÃO DE LOGOUT
+    const logout = () => {
         setUser(null);
+        localStorage.removeItem('@MovieBBG:token');
+        delete api.defaults.headers.common['Authorization'];
         router.push('/register');
-        router.refresh(); // Força a atualização de estado
+        // console.log("[AuthContext] Usuário deslogado e token removido.");
+    };
+
+    // A função de sincronização
+    const syncLocalMoviesWithDb = async () => {
+        console.log("[AuthContext] Iniciando sincronização dos filmes locais...");
+        const localMoviesRaw = localStorage.getItem("@MovieBBG");
+        if (!localMoviesRaw) return;
+        const localMovies: Movie[] = JSON.parse(localMoviesRaw);
+        if (localMovies.length === 0) return;
+
+        const moviesToSync = localMovies.map(movie => ({ movieId: movie.id, userId: 0 }));
+
+        try {
+            await api.post('/api/movie/save', moviesToSync);
+            localStorage.removeItem("@MovieBBG");
+            // console.log("[AuthContext] Filmes locais sincronizados e limpos.");
+        } catch (error) {
+            // console.error("[AuthContext] ERRO ao sincronizar filmes.", error);
+        }
     };
 
     return (
@@ -79,7 +133,3 @@ export const useAuth = () => {
     }
     return context;
 };
-
-function fetchUser() {
-    throw new Error('Function not implemented.');
-}
