@@ -26,7 +26,7 @@
       font-size: 14px;
       transition: color 0.3s;
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 5px;
 
       &:hover {
         color: #ff6600;
@@ -44,9 +44,56 @@
         gap: 8px;
 
         .btn-exit {
-          margin-left: 10px;
+          margin-left: 0;
+        }
+
+        span{
+          color: #fff;
+          transition: 1s;
+        }
+
+        span:hover{
+          color: #ff0000;
         }
       }
     }
   }
 }
+
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+    // backdrop-filter: blur(10px);
+    // background: #00000030;
+    padding: 100;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+}
+
+
+
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+

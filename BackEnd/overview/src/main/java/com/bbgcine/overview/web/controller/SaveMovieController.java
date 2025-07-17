@@ -85,9 +85,10 @@ public class SaveMovieController {
             @ApiResponse(responseCode = "403", description = "Token inválido ou ausente."),
             @ApiResponse(responseCode = "404", description = "Filme não encontrado.")
     })
-    @DeleteMapping("/movieid/{movieId}")
+    @DeleteMapping("/{movieId}")
     public ResponseEntity<Void> deleteByMovieId(@PathVariable Long movieId,
-            @AuthenticationPrincipal JwtUserDetails currentUser) {
+                                                @AuthenticationPrincipal JwtUserDetails currentUser) {
+        // CORREÇÃO: Chame o serviço que deleta pelo ID do filme (TMDB)
         saveMovieService.deleteByMovieId(movieId, currentUser);
         return ResponseEntity.noContent().build();
     }

@@ -33,23 +33,26 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui.html",
-                                "/docs-bbg-cine-api.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**",
-                                "/docs-bbg-cine-api",
-                                "/docs-bbg-cine-api/**"
-                        ).permitAll()
-                        // 3. CORREÇÃO: Permite todas as sub-rotas de /auth (ex: /auth/login, /auth/register)
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/register/**").permitAll()
-                        .anyRequest().authenticated()
-                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> {
+                    // --- REGRAS PÚBLICAS (NÃO PRECISAM DE LOGIN) ---
+                    // 1. Permite requisições OPTIONS (essencial para CORS com credenciais)
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+
+                    // 2. Permite acesso ao Swagger e documentação
+                    auth.requestMatchers(
+                            "/swagger-ui.html", "/docs-bbg-cine-api.html", "/swagger-ui/**",
+                            "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**"
+                    ).permitAll();
+                    
+                    // 3. Permite as rotas de login e de criação de utilizador
+                    auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/api/register/**").permitAll();
+
+                    // --- REGRA GERAL PARA O RESTO ---
+                    // Qualquer outra requisição precisa de autenticação
+                    auth.anyRequest().authenticated();
+                })
                 .addFilterBefore(new JwtAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -64,12 +67,11 @@ public class SpringSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

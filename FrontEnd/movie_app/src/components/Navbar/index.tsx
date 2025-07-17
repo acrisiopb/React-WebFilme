@@ -5,9 +5,18 @@ import Link from 'next/link';
 import "./index.scss";
 import { FaHeart } from "react-icons/fa";
 import { useAuth } from '@/app/context/AuthContext';
+import UpdatePassword from '../Password';
+import { useState } from 'react';
+import { MdExitToApp } from 'react-icons/md';
+import { RiLockPasswordLine } from 'react-icons/ri';
 
 export default function Navbar() {
   const { user, isLoading, logout } = useAuth();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  const togglePasswordModal = () => {
+    setShowPasswordModal((prev) => !prev);
+  };
 
   return (
     <header>
@@ -23,26 +32,38 @@ export default function Navbar() {
         </Link>
 
         <div className="nav-fav">
-
-
           <div className="auth-section">
-            <Link href="/Favorites">
-              <p><FaHeart /></p>
-            </Link>
             {isLoading ? (
               <p>Carregando...</p>
             ) : user ? (
               <div className="user-info">
-                <Link href="/Dashboard">  
-                <span>OLÁ,&nbsp;{user.username} &nbsp;</span>
+                <Link href="/Dashboard">
+                  <span>OLÁ,&nbsp;{user.username}&nbsp;</span>
                 </Link>
-                <p onClick={logout} className='btn-exit'>SAIR</p> 
-              
+
+                <p className="btn-password" onClick={togglePasswordModal}>
+                  <RiLockPasswordLine size={20} />
+                </p>
+                <p onClick={logout} className='btn-exit'><MdExitToApp size={20} /></p>
+
+                {showPasswordModal && (
+                  <div className="password-modal">
+                    <div className="modal-content">
+                      <UpdatePassword onClose={togglePasswordModal} />
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
-              <Link href="/register">
-                <p>Acessar | Cadastre-se</p>
-              </Link>
+              <>
+                <Link href="/Favorites">
+                  <p><FaHeart /></p>
+                </Link>
+
+                <Link href="/register">
+                  <p>Acessar | Cadastre-se</p>
+                </Link>
+              </>
             )}
           </div>
         </div>

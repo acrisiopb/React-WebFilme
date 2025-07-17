@@ -126,6 +126,15 @@ export default function MoviePage() {
                 </button>
               </>
             )}
+             <button className="watch-now">
+               <a
+                    target='blank'
+                    rel="external"
+                    href={`https://www.youtube.com/results?search_query=${movie.title}`}
+                  >
+               ▶ Assista o trailer
+                  </a>
+            </button>
             <button className="trailer" onClick={salveMovie}>
               Adicionar aos favoritos
             </button>

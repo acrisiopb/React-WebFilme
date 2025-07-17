@@ -7,6 +7,7 @@ import Link from 'next/link';
 import api from '@/services/api';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext'; 
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -23,38 +24,38 @@ export default function Register() {
     e.preventDefault();
     setError("");
 
-    if (isOn) { // Se o formulário for de LOGIN
-      console.log("Formulário de login submetido. A chamar a função 'login' do AuthContext...");
+    if (isOn) { 
+      // console.log("Formulário de login submetido. A chamar a função 'login' do AuthContext...");
       try {
   
         await login(email, password);
         
-        console.log("Processo de login no contexto concluído.");
+        // console.log("Processo de login no contexto concluído.");
         
       } catch (err) {
-   
-        setError("Falha no login. Verifique as suas credenciais.");
-        
+           toast.error("Verifique as suas credenciais.");
+           
         if (axios.isAxiosError(err)) {
-          console.error("ERRO DETALHADO (AXIOS) NO FORMULÁRIO:", err.response?.data || err.message);
+          // console.error("ERRO DETALHADO (AXIOS) NO FORMULÁRIO:", err.response?.data || err.message);
         } else {
-          console.error("ERRO DETALHADO (INESPERADO) NO FORMULÁRIO:", err);
+          // console.error("ERRO DETALHADO (INESPERADO) NO FORMULÁRIO:", err);
         }
       }
-    } else { // Se o formulário for de CADASTRO
+    } else {
       if (password !== confirmPassword) {
-        setError("As senhas não coincidem!");
+        toast.error("As senhas não coincidem!");
+        
         return;
       }
       try {
         const dadosParaEnviar = { username: name, email, password };
         await api.post('/api/register', dadosParaEnviar);
-        alert("Cadastro realizado com sucesso! Agora pode aceder.");
+        toast.success("Cadastro realizado com sucesso! Agora pode aceder.");
         toggle();
       }
       catch (err) {
-        setError("Erro ao realizar o cadastro. Tente novamente.");
-        console.error("Erro no cadastro:", err);
+        toast.error("Erro ao realizar o cadastro. Tente novamente.");
+        // console.error("Erro no cadastro:", err);
       }
     }
   };

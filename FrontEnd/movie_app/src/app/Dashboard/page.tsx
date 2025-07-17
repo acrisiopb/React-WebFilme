@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import api from "@/services/api";
 import axios from "axios";
 import Loading from "@/components/Loading";
+import UpdatePassword from "@/components/Password";
 
 interface FavoriteMovieData {
     movieId: number;
@@ -86,7 +87,8 @@ export default function Dashboard() {
 
     return (
         <div className="dashboard-container">
-            <h2>Dashboard - meus filmes</h2>
+            
+            <h2>Dashboard | Filmes salvos</h2>
             {movies.length === 0 ? (
                 <span className="info">Você não possui nenhum filme salvo.</span>
             ) : (
@@ -105,7 +107,7 @@ export default function Dashboard() {
                                                 ? `${movie.overview.substring(0, 100)}...`
                                                 : movie.overview
                                             }
-                                        </p>
+                                        </p>     
                                     )}
                                     <div className="buttons-wrapper">
                                         <Link   href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`} className="btn-details">

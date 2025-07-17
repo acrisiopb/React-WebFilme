@@ -19,16 +19,18 @@
 
 .dashboard-movie-list {
     padding: 24px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
     list-style: none;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    /* ADICIONE ESTA LINHA PARA CORRIGIR O ALINHAMENTO */
+    justify-content: flex-start;
 }
 
 // Estilo do Movie Card (similar ao src/components/MovieCard/index.scss)
 .movie-card {
-    width: 100%;
+    max-width: 300px;
     min-height: 300px;
     border-radius: 8px;
     overflow: hidden;
@@ -42,7 +44,9 @@
         transition: opacity .6s;
     }
 
+
     .movie-infos {
+
         position: absolute;
         bottom: 0;
         background: linear-gradient(#00000000, #000000);
@@ -66,20 +70,12 @@
             height: 0px;
             opacity: 0;
             transition: all .6s;
-            
-            .description {
-                margin-bottom: 10px;
-            }
 
-            .buttons-wrapper {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .btn-details, .btn-remove {
+            .btn-details {
+                background-color: #da0000;
                 padding: 6px 8px;
                 border-radius: 4px;
+                margin-top: 10px;
                 color: #FFF;
                 border: none;
                 cursor: pointer;
@@ -87,21 +83,20 @@
                 display: block;
                 text-decoration: none;
                 text-align: center;
-                font-size: 12px;
-            }
-
-            .btn-details {
-                background-color: #6046ff;
-                 &:hover {
-                    background-color: #371af3;
-                 }
             }
 
             .btn-remove {
-                background-color: #ef4444;
-                &:hover {
-                    background-color: #b91c1c;
-                }
+                background-color: #0f00da;
+                padding: 6px 8px;
+                border-radius: 4px;
+                margin-top: 10px;
+                color: #FFF;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                display: block;
+                text-decoration: none;
+                text-align: center;
             }
         }
     }
@@ -112,9 +107,24 @@
         .movie-poster img {
             opacity: 0.5;
         }
+
         .hidden-content {
             opacity: 1;
-            height: 120px;
+
+        }
+
+        .movie-infos:has(.description) .hidden-content {
+            height: 100px;
+        }
+
+        .movie-infos:not(:has(.description)) .hidden-content {
+            height: 50px;
+        }
+
+        .btn-default:hover {
+            background-color: #371af3;
+            border-left: 3px solid rgb(255, 255, 255);
         }
     }
+
 }

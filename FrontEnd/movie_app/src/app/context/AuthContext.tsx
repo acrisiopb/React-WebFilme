@@ -12,7 +12,6 @@ interface User {
     email: string;
 }
 
-
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
@@ -28,56 +27,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
-    
     useEffect(() => {
-        const loadUserFromStorage = async () => {
+        const initializeAuth = async () => {
             const token = localStorage.getItem('@MovieBBG:token');
-
             if (token) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                await fetchUser();
+                const fetchedUser = await fetchUser();
+                if (!fetchedUser) {
+                    localStorage.removeItem('@MovieBBG:token');
+                    delete api.defaults.headers.common['Authorization'];
+                }
             }
             setIsLoading(false);
         };
-        loadUserFromStorage();
+        initializeAuth();
     }, []);
 
-
-
-const login = async (email: string, password: string) => {
-    try {
-        const response = await axios.post('/api/login', { email, password });
-        const { token } = response.data;
-
-        if (!token) {
-            throw new Error("Token não foi recebido da rota /api/login");
-        }
-
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
-        await fetchUser();
-        await syncLocalMoviesWithDb();
-        router.push('/Dashboard');
-
-    } catch (error) {
-        delete api.defaults.headers.common['Authorization'];
-        throw error;
-    }
-};
-
-
     const fetchUser = async (): Promise<User | null> => {
-        if (!api.defaults.headers.common['Authorization']) {
-            setIsLoading(false); 
-            return null;
-        }
-
         try {
             const response = await api.get('/api/register/me');
             setUser(response.data);
             return response.data;
         } catch (error) {
+            setUser(null);
             return null;
+        }
+    };
+
+    const login = async (email: string, password: string) => {
+        try {
+            const response = await axios.post('/api/login', { email, password });
+            const { token } = response.data;
+
+            if (!token) {
+                throw new Error("Token não foi recebido da rota /api/login");
+            }
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            
+            await fetchUser();
+            await syncLocalMoviesWithDb();
+            router.push('/Dashboard');
+        } catch (error) {
+            delete api.defaults.headers.common['Authorization'];
+            throw error;
         }
     };
 
@@ -94,11 +87,9 @@ const login = async (email: string, password: string) => {
         const localMovies: Movie[] = JSON.parse(localMoviesRaw);
         if (localMovies.length === 0) return;
 
-        // Monta o payload para a sincronização em massa
         const moviesToSync = localMovies.map(movie => ({ movieId: movie.id, userId: 0 }));
 
         try {
-            // Usa o endpoint existente que espera uma lista
             await api.post('/api/movie/save', moviesToSync);
             localStorage.removeItem("@MovieBBG");
         } catch (error) {
@@ -106,17 +97,12 @@ const login = async (email: string, password: string) => {
         }
     };
 
-    // FUNÇÃO ATUALIZADA: Chama a API com o formato de payload correto
     const saveMovieToDb = async (movie: Movie) => {
         if (!user) {
             throw new Error("Usuário não autenticado.");
         }
         try {
-            // A sua API espera uma LISTA. Então, criamos uma lista com um único item.
-            // O formato do item é o mesmo da função syncLocalMoviesWithDb para consistência.
-            const payload = [{ movieId: movie.id, userId: 0 }]; // O userId é ignorado pelo backend, que usa o token.
-
-            // Chamamos o endpoint POST /api/movie/save com a lista contendo um filme.
+            const payload = [{ movieId: movie.id, userId: 0 }]; 
             await api.post('/api/movie/save', payload); 
             console.log("[AuthContext] Filme salvo no banco de dados com sucesso via API externa.");
         } catch (error) {
