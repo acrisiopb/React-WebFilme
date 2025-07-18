@@ -3,12 +3,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import "./index.scss";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaTv } from "react-icons/fa";
 import { useAuth } from '@/app/context/AuthContext';
 import UpdatePassword from '../Password';
 import { useState } from 'react';
-import { MdExitToApp } from 'react-icons/md';
+import { MdExitToApp, MdLocalMovies } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
+import { FaHouse } from 'react-icons/fa6';
 
 export default function Navbar() {
   const { user, isLoading, logout } = useAuth();
@@ -30,9 +31,7 @@ export default function Navbar() {
             priority
           />
         </Link>
-        <Link href="/series">
-          <p className="nav-item">Séries</p>
-        </Link>
+     
         <div className="nav-fav">
           <div className="auth-section">
             {isLoading ? (
@@ -68,6 +67,19 @@ export default function Navbar() {
               </>
             )}
           </div>
+        </div>
+      </nav>
+      <nav>
+        <div className="nav-item">
+          <Link href="/register">
+            <p>Home <FaHouse size={20} /></p>
+          </Link>
+          <Link href="/">
+            <p>Filmes <MdLocalMovies size={20} /></p>
+          </Link>
+          <Link href="/Series">
+            <p>Séries <FaTv size={20} /></p>
+          </Link>
         </div>
       </nav>
     </header>

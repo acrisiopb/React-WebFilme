@@ -21,14 +21,15 @@ export default function MovieList() {
         getMovies(page);
     }, [page]);
 
-    useEffect(() => {
-        toast("Bem Vindo, este é um projeto feito em NextJS, consumindo uma API de filmes - TMDB, não hospedamos filmes!", {
-            style: {
-                background: "#0d6efd",
-                color: "#fff"
-            }
-        });
-    }, []);
+    // useEffect(() => {
+        
+    //     toast("Bem Vindo, este é um projeto feito em NextJS, consumindo uma API de filmes - TMDB, não hospedamos filmes!", {
+    //         style: {
+    //             background: "#0d6efd",
+    //             color: "#fff"
+    //         }
+    //     });
+    // }, []);
     
     const getMovies = async (currentPage: number) => {
         await axios({

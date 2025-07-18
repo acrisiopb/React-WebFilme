@@ -1,4 +1,4 @@
-import MovieCarousel from "@/components/Carousel/insex";
+import MovieCarousel from "@/components/CarouselMovie/insex";
 import MovieList from "@/components/MovieList";
 import SeriesList from "@/components/SeriesList/Index";
 import { ToastContainer } from "react-toastify";
@@ -11,7 +11,6 @@ export default function Home() {
     <div>
       <MovieCarousel />
       <MovieList />
-      <SeriesList/>
     </div>
   );
 }

@@ -1,0 +1,101 @@
+.serie-hero {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 0 5%;
+}
+
+.serie-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.serie-text {
+  max-width: 50%;
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+
+    .watch-now {
+      background: #c70000;
+      color: #fff;
+
+      &:hover {
+        background: #900000;
+      }
+    }
+
+    .trailer {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+
+      &:hover {
+        background: rgba(255,255,255,0.4);
+      }
+    }
+  }
+}
+
+.serie-poster {
+  img {
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  }
+}
+
+
+// Responsivo
+@media (max-width: 768px) {
+  .serie-hero {
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+  .serie-poster{
+    display: none;
+  }
+
+  .serie-text {
+    max-width: 100%;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}

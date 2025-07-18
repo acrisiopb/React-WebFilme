@@ -28,7 +28,7 @@ export default function SeriesCard({ serie }: Props) {
                             {serie.overview.length > 100 ? `${serie.overview.substring(0, 100)}..` : serie.overview}
                         </p>
                     }
-                    <Link href={`/series/${serie.id}`} className="btn-default">Ver mais</Link>
+                    <Link href={`/Series/${serie.id}`} className="btn-default">Ver mais</Link>
                 </div>
             </div>
         </li>
