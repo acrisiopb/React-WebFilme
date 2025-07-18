@@ -30,7 +30,9 @@ export default function Navbar() {
             priority
           />
         </Link>
-
+        <Link href="/series">
+          <p className="nav-item">Séries</p>
+        </Link>
         <div className="nav-fav">
           <div className="auth-section">
             {isLoading ? (

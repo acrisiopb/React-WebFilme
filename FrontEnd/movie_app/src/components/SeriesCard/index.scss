@@ -1,0 +1,73 @@
+.series-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+
+    .series-poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 1;
+        transition: opacity .6s;
+    }
+
+    .series-infos {
+        position: absolute;
+        bottom: 0;
+        background: linear-gradient(#00000000, #000000);
+        height: 200px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding: 10px;
+
+        .series-title {
+            font-size: 17px;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .hidden-content {
+            color: #f1f5f9;
+            font-size: 12px;
+            margin-top: 8px;
+            height: 0px;
+            opacity: 0;
+            transition:  all .6s;
+
+            .btn-default {
+                background-color: #6046ff;
+                padding: 6px 8px;
+                border-radius: 4px;
+                margin-top: 10px;
+                color: #FFF;
+                border: none;
+                cursor:  pointer;
+                width: 100%;
+                display: block;
+                text-decoration: none;
+                text-align: center;
+            }
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        .series-poster img {
+            opacity: 0.5;
+        }
+        .hidden-content {
+            opacity: 1;
+        }
+        .series-infos:has(.description) .hidden-content {
+            height: 100px;
+        }
+        .series-infos:not(:has(.description)) .hidden-content {
+            height: 50px;
+        }
+    }
+}
