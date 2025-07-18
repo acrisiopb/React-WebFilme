@@ -18,16 +18,23 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableMethodSecurity
 @EnableWebMvc
 @Configuration
 public class SpringSecurityConfig {
+    
+    @Value("${frontend.origin}")
+    private String frontendOrigin;
+
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtUserDetailsService userDetailsService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtUserDetailsService userDetailsService)
+            throws Exception {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
@@ -35,25 +42,19 @@ public class SpringSecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    // --- REGRAS PÚBLICAS (NÃO PRECISAM DE LOGIN) ---
-                    // 1. Permite requisições OPTIONS (essencial para CORS com credenciais)
-                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 
-                    // 2. Permite acesso ao Swagger e documentação
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     auth.requestMatchers(
                             "/swagger-ui.html", "/docs-bbg-cine-api.html", "/swagger-ui/**",
-                            "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**"
-                    ).permitAll();
-                    
-                    // 3. Permite as rotas de login e de criação de utilizador
+                            "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll();
+
                     auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/api/register/**").permitAll();
 
-                    // --- REGRA GERAL PARA O RESTO ---
-                    // Qualquer outra requisição precisa de autenticação
                     auth.anyRequest().authenticated();
                 })
-                .addFilterBefore(new JwtAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthorizationFilter(userDetailsService),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -63,14 +64,16 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        // configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of(frontendOrigin));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
