@@ -16,23 +16,19 @@ export default function UpdatePassword({ onClose }) {
         setError('');
         setSuccess('');
 
-        // Validação de senhas
         if (newPassword !== confirmPassword) {
             setError('As senhas não coincidem.');
             return;
         }
 
         try {
-            // Enviar currentPassword, newPassword e confirmPassword
             const dadosParaEnviar = { currentPassword, newPassword, confirmPassword };
 
-            // Alteração de senha na API
-            await api.patch('/api/register', dadosParaEnviar);  // Rota para alterar senha
+            await api.patch('/api/register', dadosParaEnviar);
 
-            // Exibir mensagem de sucesso
             toast.success("Senha alterada com sucesso!");
             setSuccess("Senha alterada com sucesso!");
-            onClose();  // Fechar o modal após sucesso
+            onClose();  
         } catch (err) {
             console.error('Erro:', err.response ? err.response.data : err.message);
             toast.error("Erro ao alterar a senha. Tente novamente.");
