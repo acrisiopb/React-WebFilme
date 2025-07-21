@@ -60,7 +60,7 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 <br/>  
 
  <p align="center">
-   <h5>Swagger | Documentaçã </h5>
+   <h5>Swagger | Documentação </h5>
    <p> A documentação completa da API está disponível via Swagger:</p>
    <a href="https://deploy-bbgcine.onrender.com/swagger-ui/index.html#/">Link -> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white" alt="Badge Spring"></a>
      <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111619/tela_7_ekpfud.png" alt="Swagger">
@@ -86,7 +86,7 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 
  <br/>
 
-<h5>⚛️⚛️Aviso Legal</h5>
+<h5>⚛ Aviso Legal ⚛</h5>
 
 <p>
   Este projeto foi desenvolvido com propósito exclusivamente educacional, sem qualquer intenção comercial. Ele utiliza a API pública da <a href="https://www.themoviedb.org/" target="_blank">TMDB (The Movie Database)</a> para exibição de dados relacionados a filmes.
