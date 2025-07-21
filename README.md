@@ -20,7 +20,11 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
   </ul>
 </p>
 
-![Movie](https://github.com/user-attachments/assets/a08633f8-edb1-4fb4-937a-df9dc1466e64)
+
+
+
+![Movie](https://github.com/user-attachments/assets/ab54122c-3d91-4ffb-bbd6-d9847864696c)
+
 
 
 
