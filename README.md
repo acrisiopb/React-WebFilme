@@ -2,9 +2,10 @@
 
 <p>Este projeto foi desenvolvido utilizando Next.js, um framework moderno baseado em React, com foco em performance, renderização híbrida (SSR e SSG) e experiência do usuário.
 A aplicação consome dados diretamente da API pública do TMDB (The Movie Database), uma das maiores bases de dados de filmes, séries e celebridades do mundo.</p>
-
 <br/>
+
 ![Movie](https://github.com/user-attachments/assets/962a0cb0-05fd-4f6e-bb5c-622a02549d6c)
+
 <p>
   A aplicação realiza requisições para os endpoints da API do TMDB, utilizando uma chave de API fornecida pela própria plataforma. Os dados retornados são processados e renderizados dinamicamente nas páginas, 
   garantindo uma experiência atualizada e fluida para o usuário.
@@ -38,10 +39,8 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 
  <p align="center">
    <h5>Swagger</h5>
-   <p>Link -> <a href="https://deploy-bbgcine.onrender.com/swagger-ui/index.html#/"><img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white" alt="Badge Spring"></a></p>
-
-    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111619/tela_7_ekpfud.png" alt="Swagger">
-  
+   <a href="https://deploy-bbgcine.onrender.com/swagger-ui/index.html#/">Link -> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white" alt="Badge Spring"></a>
+     <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111619/tela_7_ekpfud.png" alt="Swagger">
  </p>
 
 
