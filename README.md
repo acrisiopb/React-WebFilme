@@ -24,7 +24,7 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 <br/>
 
 
- <p align="center">
+ <div align="center">
    <h5>TECNOLOGIAS </h5>
     <img src="https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white" alt="Badge MySQL">
     <img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" alt="Badge Spring">
@@ -33,7 +33,7 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
     <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white" alt="Badge Spring">
     <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML 5">
     <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
- </p>
+ </div>
 
 <br/>  
 
