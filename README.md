@@ -21,8 +21,20 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
   </ul>
 </p>
 
-<br/>
+<p>
+    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111621/tala_1_jqq3kf.png" alt="1">
+    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tala_3_bolvfg.png" alt="2">
+    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_3_kws0tn.png" alt="3">
+    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2_fbtril.png" alt="4">
+    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_3_kws0tn.png" alt="5">
+    <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111621/tala_1_jqq3kf.png" alt="6">
 
+
+</p>
+
+<br/>
+<p align="center"><img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753112571/painel_Mobile_vtl1fi.png"></p>
+<br/>
 
  <div align="center">
    <h5>TECNOLOGIAS </h5>
