@@ -1,4 +1,4 @@
-### Projeto | Criado em Next.js - Consumindo API TMDB - 2025
+![Movie](https://github.com/user-attachments/assets/a08633f8-edb1-4fb4-937a-df9dc1466e64)### Projeto | Criado em Next.js - Consumindo API TMDB - 2025
 
 <p>Este projeto foi desenvolvido utilizando Next.js, um framework moderno baseado em React, com foco em performance, renderização híbrida (SSR e SSG) e experiência do usuário.
 A aplicação consome dados diretamente da API pública do TMDB (The Movie Database), uma das maiores bases de dados de filmes, séries e celebridades do mundo.</p>
@@ -22,7 +22,8 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 
 
 <p align="center">
-    ![Movie](https://github.com/user-attachments/assets/cdbf68c1-f03f-4965-84f5-0324b8bc6c6c)
+  ![Movie](https://github.com/user-attachments/assets/9b7ca4d7-18c4-48cb-96cf-05eb26e5c4b9)
+
 </p>
 
 
