@@ -1,7 +1,7 @@
 ### Projeto | Criado em Next.js - Consumindo API TMDB - 2025
 
 <p>
-  <img href="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753123884/logoCine_zeqoei.png" width="200" height="170"/>
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753123884/logoCine_zeqoei.png" width="160" height="170"/>
 </p>
 
 <p>Este projeto foi desenvolvido utilizando Next.js, um framework moderno baseado em React, com foco em performance, renderização híbrida (SSR e SSG) e experiência do usuário.
