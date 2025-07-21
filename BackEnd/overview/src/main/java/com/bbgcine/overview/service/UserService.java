@@ -26,6 +26,8 @@ public class UserService {
     public User save(User user) throws Exception {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setEmail(user.getEmail().toUpperCase());
+            user.setUsername(user.getUsername().toUpperCase());
             return userRepositoy.save(user);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             throw new UsernameUniqueViolationException(

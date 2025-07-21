@@ -17,46 +17,47 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
 import java.util.List;
 
 @EnableMethodSecurity
-@EnableWebMvc
 @Configuration
 public class SpringSecurityConfig {
-    
+
     @Value("${frontend.origin}")
     private String frontendOrigin;
 
+    
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http, JwtUserDetailsService userDetailsService) throws Exception {
+    return http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> {
+                auth.requestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/docs-bbg-cine-api.html", 
+                            
+                        "/docs-bbg-cine-api/**"    
+                ).permitAll();
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtUserDetailsService userDetailsService)
-            throws Exception {
-        return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> {
-
-                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    auth.requestMatchers(
-                            "/swagger-ui.html", "/docs-bbg-cine-api.html", "/swagger-ui/**",
-                            "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll();
-
-                    auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/api/register/**").permitAll();
-
-                    auth.anyRequest().authenticated();
-                })
-                .addFilterBefore(new JwtAuthorizationFilter(userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+                // PERMITE ACESSO PÚBLICO aos endpoints de autenticação e registro
+                auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll(); 
+                auth.requestMatchers(HttpMethod.POST, "/api/register/**").permitAll(); 
+                    auth.requestMatchers(HttpMethod.GET, "/api/register/ping**").permitAll();
+                
+                // EXIGE AUTENTICAÇÃO para todas as outras requisições
+                auth.anyRequest().authenticated();
+            })
+            .addFilterBefore(new JwtAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class) //
+            .build();
+}
 
     @Bean
     public PasswordEncoder passwordEncoder() {

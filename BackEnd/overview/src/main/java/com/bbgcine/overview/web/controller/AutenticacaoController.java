@@ -38,17 +38,17 @@ public class AutenticacaoController {
     public ResponseEntity<?> authenticar(@RequestBody @Valid UserLoginDto dto, HttpServletRequest request) {
         log.info("Processo de autenticação pelo login {}", dto.getEmail());
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail().toUpperCase(), dto.getPassword());
             authenticationManager.authenticate(authenticationToken);
             
             // Geramos o token
-            JwtToken token = detailsService.getTokenAuthenticated(dto.getEmail());
+            JwtToken token = detailsService.getTokenAuthenticated(dto.getEmail().toUpperCase());
             
             // Retornamos o token diretamente no corpo da resposta
             return ResponseEntity.ok(token);
 
         } catch (AuthenticationException ex) {
-            log.warn("Bad credentials from username '{}'", dto.getEmail());
+            log.warn("Bad credentials from username '{}'", dto.getEmail().toUpperCase());
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED, "Credenciais Inválidas"));

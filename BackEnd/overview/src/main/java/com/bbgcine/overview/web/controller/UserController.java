@@ -101,4 +101,15 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Manter a API sempre Ativa - Render.", description = "", security = @SecurityRequirement(name = "security"), responses = {
+
+            @ApiResponse(responseCode = "200", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
+
+    })
+
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("pong");
+    }
+
 }
