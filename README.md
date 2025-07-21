@@ -24,20 +24,20 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 <h5>Prévia</h5>
 <a href="https://bbg-front-end.vercel.app/">LINK - > SITE </a>
 <p align="center">
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111621/tala_1_jqq3kf.png" alt="1" width="300" />
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tala_3_bolvfg.png" alt="2" width="300" />
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_3_kws0tn.png" alt="3" width="300" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111621/tala_1_jqq3kf.png" alt="1" width="450" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tala_3_bolvfg.png" alt="2" width="450" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_3_kws0tn.png" alt="3" width="450" />
 </p>
 
 <p align="center">
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2_fbtril.png" alt="4" width="300" />
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_4_s33vdg.png" alt="5" width="300" />
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111621/tela_5_xdlh4h.png" alt="6" width="300" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2_fbtril.png" alt="4" width="450" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_4_s33vdg.png" alt="5" width="450" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111621/tela_5_xdlh4h.png" alt="6" width="450" />
 </p>
 
 <p align="center">
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2.1_o3y9w5.png" alt="7" width="300" />
-  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_6_czcd5k.png" alt="8" width="300" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2.1_o3y9w5.png" alt="7" width="450" />
+  <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_6_czcd5k.png" alt="8" width="450" />
 </p>
 
 <br/>
