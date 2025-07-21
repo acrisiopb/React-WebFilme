@@ -35,7 +35,7 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 
  Img VII | Img VIII | Img IX
 |:-----:|:----:|:------------------:| 
-<img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2.1_o3y9w5.png" alt="7" width="400" /> | <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_6_czcd5k.png" alt="8" width="400" />   | <img src="" alt="8" width="400" /> 
+<img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_2.1_o3y9w5.png" alt="7" width="400" /> | <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111620/tela_6_czcd5k.png" alt="8" width="400" />   | <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753123326/9_y8k9ta.png" alt="8" width="400" /> 
 
 
 <br/>
