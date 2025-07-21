@@ -6,7 +6,7 @@ import "./index.scss";
 import Link from 'next/link';
 import api from '@/services/api';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
 export default function Register() {
@@ -14,27 +14,27 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isOn, setIsOn] = useState(true); 
+  const [isOn, setIsOn] = useState(true);
   const [closing, setClosing] = useState(false);
   const [error, setError] = useState("");
-  
-  const { login } = useAuth(); 
+
+  const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
-    if (isOn) { 
+    if (isOn) {
       // console.log("Formulário de login submetido. A chamar a função 'login' do AuthContext...");
       try {
-  
+       
         await login(email, password);
-        
+
         // console.log("Processo de login no contexto concluído.");
-        
+
       } catch (err) {
-           toast.error("Verifique as suas credenciais.");
-           
+        toast.error("Verifique as suas credenciais.");
+
         if (axios.isAxiosError(err)) {
           // console.error("ERRO DETALHADO (AXIOS) NO FORMULÁRIO:", err.response?.data || err.message);
         } else {
@@ -43,17 +43,20 @@ export default function Register() {
       }
     } else {
       if (password !== confirmPassword) {
+        toast.warning("Aguarde..");
         toast.error("As senhas não coincidem!");
-        
+
         return;
       }
       try {
         const dadosParaEnviar = { username: name, email, password };
         await api.post('/api/register', dadosParaEnviar);
+        toast.warning("Aguarde..");
         toast.success("Cadastro realizado com sucesso! Agora pode aceder.");
         toggle();
       }
       catch (err) {
+        toast.warning("Aguarde..");
         toast.error("Erro ao realizar o cadastro. Tente novamente.");
         // console.error("Erro no cadastro:", err);
       }
@@ -72,7 +75,7 @@ export default function Register() {
       setConfirmPassword("");
     }, 300);
   };
-  
+
   return (
     <div className="container">
       <div className="card-left">

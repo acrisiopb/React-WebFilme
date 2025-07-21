@@ -6,7 +6,7 @@ export interface Props {
     rating: number,
 }
 
-export default function starRating(props: Props) {
+export default function StarRating(props: Props) {
 
     const numStarts = Math.round(props.rating / 2);
 

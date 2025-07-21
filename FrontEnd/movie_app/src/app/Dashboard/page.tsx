@@ -10,11 +10,11 @@ import { useAuth } from "../context/AuthContext";
 import api from "@/services/api";
 import axios from "axios";
 import Loading from "@/components/Loading";
-import UpdatePassword from "@/components/Password";
 
 interface FavoriteMovieData {
     movieId: number;
 }
+export const dynamic = 'force-dynamic';
 
 export default function Dashboard() {
     const { user } = useAuth();
@@ -31,6 +31,7 @@ export default function Dashboard() {
             try {
                 const response = await api.get('/api/movie/save');
                 const favoriteMovieData: FavoriteMovieData[] = response.data;
+                
 
                 if (favoriteMovieData.length === 0) {
                     setIsLoading(false);
@@ -51,11 +52,12 @@ export default function Dashboard() {
                 const movieResponses = await Promise.all(moviePromises);
 
                 const favoriteMovies = movieResponses.map(res => res.data);
+                console.log("DADOS DOS FILMES RECEBIDOS:", favoriteMovies);
 
                 setMovies(favoriteMovies);
 
             } catch (error) {
-                console.error("Erro ao buscar filmes favoritos:", error);
+                // console.error("Erro ao buscar filmes favoritos:", error);
                 toast.error("Não foi possível carregar seus filmes favoritos.");
             } finally {
                 setIsLoading(false);
@@ -67,7 +69,7 @@ export default function Dashboard() {
 
     async function removeMovie(id: number) {
         try {
-            console.log(id);
+            // console.log(id);
             await api.delete(`/api/movie/save/${id}`);
 
             const filtMoves = movies.filter((movie) => movie.id !== id);
@@ -75,19 +77,19 @@ export default function Dashboard() {
 
             toast.success("Filme removido da sua lista.");
         } catch (error) {
-            console.error("Erro ao remover filme:", error);
+            // console.error("Erro ao remover filme:", error);
             toast.error("Erro ao remover o filme.");
         }
     }
 
 
-    if (isLoading) {
-        return <Loading />;
-    }
+    // if (isLoading) {
+    //     return <Loading />;
+    // }
 
     return (
         <div className="dashboard-container">
-            
+
             <h2>Dashboard | Filmes salvos</h2>
             {movies.length === 0 ? (
                 <span className="info">Você não possui nenhum filme salvo.</span>
@@ -107,12 +109,17 @@ export default function Dashboard() {
                                                 ? `${movie.overview.substring(0, 100)}...`
                                                 : movie.overview
                                             }
-                                        </p>     
+                                        </p>
                                     )}
                                     <div className="buttons-wrapper">
-                                        <Link   href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`} className="btn-details">
+                                        <a
+                                            href={`https://vidsrc.xyz/embed/movie?tmdb=${movie.id}&ds_lang=pt`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="btn-details"
+                                        >
                                             Assistir
-                                        </Link>
+                                        </a>
                                         <button onClick={() => removeMovie(movie.id)} className="btn-remove">
                                             Remover
                                         </button>

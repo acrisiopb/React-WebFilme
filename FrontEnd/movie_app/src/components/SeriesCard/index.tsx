@@ -1,12 +1,12 @@
 'use client';
 
-import { Serie } from "@/types/movie";
 import StarRating from "../StarRating";
 import './index.scss';
 import Link from "next/link";
+import { TVShow } from "@/types/tvshow";
 
 interface Props {
-    serie: Serie;
+    serie: TVShow;
 }
 
 export default function SeriesCard({ serie }: Props) {
@@ -19,9 +19,6 @@ export default function SeriesCard({ serie }: Props) {
                 <p className="series-title">
                     {serie.name}
                 </p>
-                {serie.vote_average > 0 &&
-                    <StarRating rating={serie.vote_average} />
-                }
                 <div className="hidden-content">
                     {serie.overview &&
                         <p className='description'>

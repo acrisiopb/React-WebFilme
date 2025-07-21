@@ -14,7 +14,7 @@
     "@mui/material": "^7.2.0",
     "axios": "^1.7.2",
     "jose": "^6.0.11",
-    "next": "14.2.4",
+    "next": "15.4.2",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",

@@ -1,3 +1,4 @@
+'use client';
 
 import ReactLoading from 'react-loading';
 import './index.scss';

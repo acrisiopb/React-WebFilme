@@ -130,7 +130,7 @@ export default function MoviePage() {
                <a
                     target='blank'
                     rel="external"
-                    href={`https://www.youtube.com/results?search_query=${movie.title}`}
+                    href={`https://www.youtube.com/results?search_query=${movie.title}+trailer`}
                   >
                ▶ Assista o trailer
                   </a>

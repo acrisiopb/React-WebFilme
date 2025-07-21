@@ -13,7 +13,6 @@ export default function MovieList() {
 
     const [movies, setMovies] = useState<Movie[]>([]);
     const [page, setPage] = useState<number>(1);
-    // Load
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
 
@@ -21,15 +20,15 @@ export default function MovieList() {
         getMovies(page);
     }, [page]);
 
-    // useEffect(() => {
+    useEffect(() => {
         
-    //     toast("Bem Vindo, este é um projeto feito em NextJS, consumindo uma API de filmes - TMDB, não hospedamos filmes!", {
-    //         style: {
-    //             background: "#0d6efd",
-    //             color: "#fff"
-    //         }
-    //     });
-    // }, []);
+        toast("Bem Vindo, este é um projeto feito em NextJS, consumindo uma API de filmes - TMDB, não hospedamos filmes!", {
+            style: {
+                background: "#0d6efd",
+                color: "#fff"
+            }
+        });
+    }, []);
     
     const getMovies = async (currentPage: number) => {
         await axios({
@@ -46,9 +45,9 @@ export default function MovieList() {
             setIsLoading(false);
         })
     }
-    if (isLoading) {
-        return <Loading />
-    }
+    // if (isLoading) {
+    //     return <Loading />
+    // }
 
 
     return (

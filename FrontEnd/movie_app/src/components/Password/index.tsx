@@ -3,14 +3,18 @@ import './index.scss';
 import api from '@/services/api';
 import { toast } from 'react-toastify';
 
-export default function UpdatePassword({ onClose }) {
+type UpdatePasswordProps = {
+    onClose: () => void;
+};
+
+export default function UpdatePassword({ onClose }: UpdatePasswordProps) {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => { 
         e.preventDefault();
 
         setError('');
@@ -28,8 +32,8 @@ export default function UpdatePassword({ onClose }) {
 
             toast.success("Senha alterada com sucesso!");
             setSuccess("Senha alterada com sucesso!");
-            onClose();  
-        } catch (err) {
+            onClose();
+        } catch (err: any) {
             console.error('Erro:', err.response ? err.response.data : err.message);
             toast.error("Erro ao alterar a senha. Tente novamente.");
             setError('Erro ao alterar a senha. Tente novamente.');

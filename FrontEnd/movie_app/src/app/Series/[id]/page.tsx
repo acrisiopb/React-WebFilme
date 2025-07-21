@@ -1,5 +1,5 @@
 "use client";
-import { serie } from "@/types/movie"
+import { Movie } from "@/types/movie"
 import { toast } from 'react-toastify';
 import { useParams, useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ import { useAuth } from "@/app/context/AuthContext";
 
 
 export interface props {
-  serie: serie
+  serie: Movie
 }
 
 
@@ -24,7 +24,7 @@ export default function SeriePage() {
   const params = useParams();
   const id = params.id;
 
-  const [serie, setSerie] = useState<serie | null>(null);
+  const [serie, setSerie] = useState<Movie | null>(null);
 
   useEffect(() => {
 
@@ -45,7 +45,6 @@ export default function SeriePage() {
 
       }
       catch (err) {
-        // Trata o caso de erro, redirecionando para a página inicial
         console.log("Serie NÃO ENCONTRADO");
         router.push("/");
 
@@ -56,32 +55,29 @@ export default function SeriePage() {
 
   }, [id, router]);
 
-  // highlight-start
   async function salveSerie() {
     if (!serie) return;
 
-    // Se o usuário estiver logado, salva direto no banco
     if (user) {
       try {
         await saveMovieToDb(serie);
-        toast.success("Filme salvo nos seus favoritos!", {
+        toast.success("Serie salvo nos seus favoritos!", {
           style: { background: "rgb(71, 110, 4)", color: "#fff" }
         });
       } catch (error) {
-        toast.error("Erro ao salvar o filme. Tente novamente.", {
+        toast.error("Erro ao salvar o serie. Tente novamente.", {
           style: { background: "rgb(199, 0, 0)", color: "#fff" }
         });
       }
       return;
     }
 
-    // Lógica original para usuários deslogados (localStorage)
     const MyList = localStorage.getItem("@serieBBG");
     let serieSave = MyList ? JSON.parse(MyList) : [];
-    const hasSerie = serieSave.some((m: serie) => m.id === serie.id);
+    const hasSerie = serieSave.some((m: Movie) => m.id === serie.id);
 
     if (hasSerie) {
-      toast.warn("Este filme já está na sua lista!", {
+      toast.warn("Este serie já está na sua lista!", {
         style: { background: "rgb(199, 0, 0)", color: "#fff" }
       });
       return;
