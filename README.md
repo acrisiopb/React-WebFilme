@@ -47,10 +47,50 @@ A aplicação consome dados diretamente da API pública do TMDB (The Movie Datab
 <br/>  
 
  <p align="center">
-   <h5>Swagger</h5>
+   <h5>Swagger | Documentaçã </h5>
+   <p> A documentação completa da API está disponível via Swagger:</p>
    <a href="https://deploy-bbgcine.onrender.com/swagger-ui/index.html#/">Link -> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white" alt="Badge Spring"></a>
      <img src="https://res.cloudinary.com/dyk1w5pnr/image/upload/v1753111619/tela_7_ekpfud.png" alt="Swagger">
  </p>
+
+
+ <br/>
+
+ <h5>Instruções de Instalação</h5>
+
+<p>
+  <strong>Front-end:</strong> abra a pasta principal chamada <code>movie_app</code> no terminal, instale as dependências com o comando:<br>
+  <code>npm install</code><br>
+  Em seguida, inicie a aplicação com:<br>
+  <code>npm run dev</code>
+</p>
+
+<p>
+  <strong>Back-end:</strong> abra a pasta <code>overview</code> na sua IDE preferida e execute a aplicação Spring Boot.<br>
+  <strong>Observação:</strong> configure o banco de dados no arquivo <code>application.properties</code> com o nome e credenciais desejadas antes de iniciar o projeto.
+</p>
+
+
+ <br/>
+
+<h5>⚛️⚛️Aviso Legal</h5>
+
+<p>
+  Este projeto foi desenvolvido com propósito exclusivamente educacional, sem qualquer intenção comercial. Ele utiliza a API pública da <a href="https://www.themoviedb.org/" target="_blank">TMDB (The Movie Database)</a> para exibição de dados relacionados a filmes.
+</p>
+
+<p>
+  Este site <strong>não possui nenhuma afiliação oficial</strong> com a TMDB. Todos os direitos autorais e marcas registradas pertencem aos seus respectivos proprietários.
+</p>
+
+<p>
+  Caso você seja o titular de algum conteúdo exibido e deseje solicitar a remoção, entre em contato.
+</p>
+
+<p>
+  Desenvolvido por <strong>Acrísio Cruz</strong>.
+</p>
+
 
 
 
